@@ -1,12 +1,12 @@
-<!DOCOTYPE html>
-<html>
-<style>
-body {
-  background-color: #23272A;
-}
-</style>
-<body>
-<br>
-<p style="color:white;">enter password:</p>
-</body>
-</html>
+<div>
+    <label for="username">Username:</label>
+    <input type="text" id="username" name="username">
+</div>
+
+<div>
+    <label for="pass">Password (8 characters minimum):</label>
+    <input type="password" id="pass" name="password"
+           minlength="8" required>
+</div>
+
+<input type="submit" value="Sign in">
