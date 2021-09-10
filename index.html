@@ -1,7 +1,15 @@
 <!DOCTYPE html>
 <html>
 <title>page not found</title>
-<head><style>
+<head>
+<style>
+.vertical-center {
+  margin: 0;
+  position: absolute;
+  top: 50%;
+  -ms-transform: translateY(-50%);
+  transform: translateY(-50%);
+}
 div.a {
   font-size: 200px;
 }
@@ -14,10 +22,13 @@ div.c {
 </style>
 </head><center>
 <body>
-<div class="a"><b><br>404</b></div>
-<div class="b"><b>Not Found</b></div><br>
-<div class="c">
-The resources requested could not be found on this server!
-</div>
+  <div class="vertical-center">
+    <div class="a"><b>404</b></div>
+    <div class="b"><b>Not Found</b></div>
+    <div class="c">The resources requested could not be found on this server!</div>
 </center></body>
+</html>
+  </div>
+</div>
+</body>
 </html>
