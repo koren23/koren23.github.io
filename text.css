@@ -4,3 +4,7 @@
 .big {
     font-size: 22px;
 }
+.image {
+display: block;
+margin-left: auto;
+}
