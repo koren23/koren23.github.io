@@ -9,8 +9,8 @@ div.links {
 .button {
     background-color: #7289da;
     color: #2c2f33;
-    padding: 14px 16px;
-    margin: 4px 2px;
+    padding: 18px 20px;
+    margin: 6px 4px;
     cursor: pointer;
 }
   .button:hover {background-color: #6375b6}
