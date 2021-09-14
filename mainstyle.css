@@ -9,10 +9,10 @@ box-shadow: 0 8px 16px 0 rgba(0,0,0,0.2), 0 6px 20px 0 rgba(0,0,0,0.19);
 .button {
   background-color: #7289da;
   color: #2c2f33;
-  padding: 30px 35px;
+  padding: 20px 20px;
   margin: 20px 4px;
   cursor: pointer;
-  font-size: 17px;
+  font-size: 15px;
 }
 .button:hover {background-color: #6375b6}
 .button:active {
