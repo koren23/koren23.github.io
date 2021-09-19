@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<link rel="stylesheet" href="search.css">
+</head>
+<body>
+<div class="row" >
+  <div class="left" style="background-color:#23272A">
+    <h2></h2>
+    <input type="text" id="mySearch" onkeyup="myFunction()" placeholder="Search.." title="Type in a category">
+    <div style="background-color:#99aab5"><ul id="myMenu">
+      <li><a href="index">404 error</a></li>
+      <li><a href=""></a></li>
+      <li><a href=""></a></li>
+      <li><a href=""></a></li>
+      <li><a href=""></a></li>
+      <li><a href=""></a></li>
+      <li><a href=""></a></li>
+    </ul>
+  </div>
+  
+  <div class="right" style="background-color:#99aab5;">
+  </div>
+</div>
+
+<script>
+function myFunction() {
+  var input, filter, ul, li, a, i;
+  input = document.getElementById("mySearch");
+  filter = input.value.toUpperCase();
+  ul = document.getElementById("myMenu");
+  li = ul.getElementsByTagName("li");
+  for (i = 0; i < li.length; i++) {
+    a = li[i].getElementsByTagName("a")[0];
+    if (a.innerHTML.toUpperCase().indexOf(filter) > -1) {
+      li[i].style.display = "";
+    } else {
+      li[i].style.display = "none";
+    }
+  }
+}
+</script>
+</body>
+</html>
