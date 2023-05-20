@@ -1,21 +1,39 @@
+<!DOCTYPE html>
 <html>
+  <head>
     <style>
-        body {background: linear-gradient(100deg, #252525 50%, #b4b4b4 50%);}
-        input {left:40%;right:40%;bottom:48%;top:48%;position:absolute}
+      body {
+        background: linear-gradient(100deg, #252525 50%, #b4b4b4 50%);
+      }
+      input {
+        left: 40%;
+        right: 40%;
+        bottom: 48%;
+        top: 48%;
+        position: absolute;
+      }
     </style>
+  </head>
   <body>
-  <div class="container">
-  <form>
-    <label for="psw"></label>
-    <input type="password" id="psw" onblur="password()">
-  </form>
-</div>  
-  </body>
-  <script>
-    function password(){
+    <div class="container">
+      <form>
+        <label for="psw"></label>
+        <input type="password" id="psw" onkeydown="checkEnter(event)">
+      </form>
+    </div>
+
+    <script>
+      function password() {
         const val = document.querySelector('input').value;
         window.location.replace("https://koren23.github.io/" + val);
-    }
+      }
 
-  </script>
-    </html>
+      function checkEnter(event) {
+        if (event.key === 'Enter') {
+          event.preventDefault(); // Prevent form submission
+          password();
+        }
+      }
+    </script>
+  </body>
+</html>
