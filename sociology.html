@@ -1,0 +1,280 @@
+<!DOCTYPE html>
+<html lang="he">
+    <head>
+        <style>
+            body {
+                background-color: #2e2e2e;
+                color: white;
+                display: flex;
+                flex-direction: column;
+                gap: 10px;
+                text-align: center;
+            }
+            .card {
+                height: 100px;
+                background-color: #696969;
+                cursor: pointer;
+                margin-bottom: 10px;
+                text-align: center;
+            }
+            .card:hover {
+                background-color: #7c7c7c;
+            }
+            .hidden {
+                display: none;
+            }
+            .nothidden {
+                display: block;
+            }
+            .card:active {
+                background-color: #444444;
+            }
+            .תרבות {
+                background-color: #1a0011;
+            }
+            .קבוצה {
+                background-color: #000822;
+            }
+            .משפחה {
+                background-color: #220000;
+            }
+            .חיברות {
+                background-color: #002207;
+            }
+        </style>
+    </head>
+    <body>
+        <div class="תרבות">
+            <h1>תרבות</h1>
+            <div class="card" onclick="showParagraphs(event)">
+                <p class="nothidden">מרכיבי התרבות</p>
+                <p class="hidden">חומרי ולא חומרי</p>
+            </div>
+            <div class="card" onclick="showParagraphs(event)">
+                <p class="nothidden">ערכים</p>
+                <p class="hidden">אידיאלים אמות מידה בתחום האמונה המוסר וההתנהגות</p>
+            </div>
+            <div class="card" onclick="showParagraphs(event)">
+                <p class="nothidden">קונפליקט ערכים</p>
+                <p class="hidden">כאשר אדם או חברה נאלצים לבחור בין 2 פעולות המבוססות על שני ערכים שבראש סולם הערכים</p>
+            </div>
+            <div class="card" onclick="showParagraphs(event)">
+                <p class="nothidden">נורמות</p>
+                <p class="hidden">תרגום הערכים להנחיות פעולה</p>
+            </div>
+            <div class="card" onclick="showParagraphs(event)">
+                <p class="nothidden">סוגי הנורמות</p>
+                <p class="hidden">מורס - בסיסיות לחברה סנקציות שליליות חמורות<br>פולקוויס - אי ציות להן אינו נחשב פגיעה חמורה סנקציות חמורות פחות</p>
+            </div>
+            <div class="card" onclick="showParagraphs(event)">
+                <p class="nothidden">סנקציה</p>
+                <p class="hidden">תגובה חיובית או שלילית על מילוי נורמה או על אי מילוי נורמה</p>
+            </div>
+            <div class="card" onclick="showParagraphs(event)">
+                <p class="nothidden">סוגי סנקציות</p>
+                <p class="hidden">פורמליות חיוביות, פורמליות שליליות, לא פורמליות חיוביות, לא פורמליות שליליות</p>
+            </div>
+            <div class="card" onclick="showParagraphs(event)">
+                <p class="nothidden">סמל</p>
+                <p class="hidden">דבר מה המייצג דבר אחר בעל משמעות רגשית או רעיונית באופן מסוים שמוסכם על בני אדם בקבוצה אנושית מסוימת</p>
+            </div>
+            <div class="card" onclick="showParagraphs(event)">
+                <p class="nothidden">אתנוצנטריות</p>
+                <p class="hidden">נטייתו של אדם לראות בתרבותו שלו את התרבות המרכזית, הנעלה, הטובה יותר מאחרות "הנכונה" תוך שיפוטן של תרבויות אחרות בהשוואה לתרבותו</p>
+            </div>
+            <div class="card" onclick="showParagraphs(event)">
+                <p class="nothidden">יחסיות תרבותית</p>
+                <p class="hidden">כדי להבין תרבות אחרת יש להימנע משיפוט</p>
+            </div>
+            <div class="card" onclick="showParagraphs(event)">
+                <p class="nothidden">התיאוריה הפונקציונליסטית</p>
+                <p class="hidden">בכל חברה מתקיימת הסכמה כללית לערכי היסוד, הסדר החברתי מתאפשר בשל הסכמה הרחבה לערכי הללו<br>ישנם פונקציות גלויות ופונקציות סמויות</p>
+            </div>
+            <div class="card" onclick="showParagraphs(event)">
+                <p class="nothidden">גישת הקונפליקט</p>
+                <p class="hidden">החברה היא זירה שבה מתנהל מאבק על כוח ועל שליטה, כולם רוצים את המשאבים המוגבלים (כוח כסף כבוד) יש חוסר שיוויון<br>האליטות יעשו הכל כדי לשמר את המצב ואלו החשים מכופחים ינסו לשנות את המצב וליצור או שיוויון חברתי או חוסר שיוויון הפועל למענם</p>
+            </div>
+            <div class="card" onclick="showParagraphs(event)">
+                <p class="nothidden">גישת האינטרקציה סימבולית</p>
+                <p class="hidden">החברה מתהווה כמציאות משותפת הנבנית במהלך האינטרקציות באמצעות התהליך האנושי של מתן הסבר או פירוש לכל הסובב אותנו</p>
+            </div>
+            <div class="card" onclick="showParagraphs(event)">
+                <p class="nothidden">הגדרת מצב</p>
+                <p class="hidden">האופן שהפרט מפרש את המציאות החברתית באופן סובייקטיבי באמצעות הפרשנות שהו אנותן לסמלים</p>
+            </div>
+            <div class="card" onclick="showParagraphs(event)">
+                <p class="nothidden">תרבות גלובלית</p>
+                <p class="hidden">מצב שבו יש קשרי גומלין נרחבים ותלות גומלין בין חברות שונות ברחבי העולם</p>
+            </div>
+            <div class="card" onclick="showParagraphs(event)">
+                <p class="nothidden">תרבות מקומית</p>
+                <p class="hidden">תרבות שאין לה קשרי גומלין נרחבים ותלות גומלין בין חברות שונות ברחבי העולם</p>
+            </div>
+            <div class="card" onclick="showParagraphs(event)">
+                <p class="nothidden">תרבות הצריכה</p>
+                <p class="hidden">חברות בנות זמננו מטפחות את הצריכה, את הקנייה ואת השימוש בסחורות לשם ביטוי סגנון חיים</p>
+            </div>
+        </div>
+        <div class="קבוצה">
+            <h1></h1>
+            <div class="card" onclick="showParagraphs(event)">
+                <p class="nothidden"></p>
+                <p class="hidden"></p>
+            </div>
+            <div class="card" onclick="showParagraphs(event)">
+                <p class="nothidden"></p>
+                <p class="hidden"></p>
+            </div>
+            <div class="card" onclick="showParagraphs(event)">
+                <p class="nothidden"></p>
+                <p class="hidden"></p>
+            </div>
+            <div class="card" onclick="showParagraphs(event)">
+                <p class="nothidden"></p>
+                <p class="hidden"></p>
+            </div>
+            <div class="card" onclick="showParagraphs(event)">
+                <p class="nothidden"></p>
+                <p class="hidden"></p>
+            </div>
+            <div class="card" onclick="showParagraphs(event)">
+                <p class="nothidden"></p>
+                <p class="hidden"></p>
+            </div>
+            <div class="card" onclick="showParagraphs(event)">
+                <p class="nothidden"></p>
+                <p class="hidden"></p>
+            </div>
+            <div class="card" onclick="showParagraphs(event)">
+                <p class="nothidden"></p>
+                <p class="hidden"></p>
+            </div>
+            <div class="card" onclick="showParagraphs(event)">
+                <p class="nothidden"></p>
+                <p class="hidden"></p>
+            </div>
+            <div class="card" onclick="showParagraphs(event)">
+                <p class="nothidden"></p>
+                <p class="hidden"></p>
+            </div>
+            <div class="card" onclick="showParagraphs(event)">
+                <p class="nothidden"></p>
+                <p class="hidden"></p>
+            </div>
+            <div class="card" onclick="showParagraphs(event)">
+                <p class="nothidden"></p>
+                <p class="hidden"></p>
+            </div>
+        </div>
+        <div class="משפחה">
+            <h1></h1>
+            <div class="card" onclick="showParagraphs(event)">
+                <p class="nothidden"></p>
+                <p class="hidden"></p>
+            </div>
+            <div class="card" onclick="showParagraphs(event)">
+                <p class="nothidden"></p>
+                <p class="hidden"></p>
+            </div>
+            <div class="card" onclick="showParagraphs(event)">
+                <p class="nothidden"></p>
+                <p class="hidden"></p>
+            </div>
+            <div class="card" onclick="showParagraphs(event)">
+                <p class="nothidden"></p>
+                <p class="hidden"></p>
+            </div>
+            <div class="card" onclick="showParagraphs(event)">
+                <p class="nothidden"></p>
+                <p class="hidden"></p>
+            </div>
+            <div class="card" onclick="showParagraphs(event)">
+                <p class="nothidden"></p>
+                <p class="hidden"></p>
+            </div>
+            <div class="card" onclick="showParagraphs(event)">
+                <p class="nothidden"></p>
+                <p class="hidden"></p>
+            </div>
+            <div class="card" onclick="showParagraphs(event)">
+                <p class="nothidden"></p>
+                <p class="hidden"></p>
+            </div>
+            <div class="card" onclick="showParagraphs(event)">
+                <p class="nothidden"></p>
+                <p class="hidden"></p>
+            </div>
+            <div class="card" onclick="showParagraphs(event)">
+                <p class="nothidden"></p>
+                <p class="hidden"></p>
+            </div>
+            <div class="card" onclick="showParagraphs(event)">
+                <p class="nothidden"></p>
+                <p class="hidden"></p>
+            </div>
+            <div class="card" onclick="showParagraphs(event)">
+                <p class="nothidden"></p>
+                <p class="hidden"></p>
+            </div>
+        </div>
+        <div class="חיברות">
+            <h1></h1>
+            <div class="card" onclick="showParagraphs(event)">
+                <p class="nothidden"></p>
+                <p class="hidden"></p>
+            </div>
+            <div class="card" onclick="showParagraphs(event)">
+                <p class="nothidden"></p>
+                <p class="hidden"></p>
+            </div>
+            <div class="card" onclick="showParagraphs(event)">
+                <p class="nothidden"></p>
+                <p class="hidden"></p>
+            </div>
+            <div class="card" onclick="showParagraphs(event)">
+                <p class="nothidden"></p>
+                <p class="hidden"></p>
+            </div>
+            <div class="card" onclick="showParagraphs(event)">
+                <p class="nothidden"></p>
+                <p class="hidden"></p>
+            </div>
+            <div class="card" onclick="showParagraphs(event)">
+                <p class="nothidden"></p>
+                <p class="hidden"></p>
+            </div>
+            <div class="card" onclick="showParagraphs(event)">
+                <p class="nothidden"></p>
+                <p class="hidden"></p>
+            </div>
+            <div class="card" onclick="showParagraphs(event)">
+                <p class="nothidden"></p>
+                <p class="hidden"></p>
+            </div>
+            <div class="card" onclick="showParagraphs(event)">
+                <p class="nothidden"></p>
+                <p class="hidden"></p>
+            </div>
+            <div class="card" onclick="showParagraphs(event)">
+                <p class="nothidden"></p>
+                <p class="hidden"></p>
+            </div>
+            <div class="card" onclick="showParagraphs(event)">
+                <p class="nothidden"></p>
+                <p class="hidden"></p>
+            </div>
+            <div class="card" onclick="showParagraphs(event)">
+                <p class="nothidden"></p>
+                <p class="hidden"></p>
+            </div>
+        </div>
+        <script>
+            function showParagraphs(event) {
+                var card = event.currentTarget;
+                var hiddenParagraph = card.querySelector('p.hidden');
+                hiddenParagraph.classList.toggle('hidden');
+            }
+
+        </script>
+    </body>
+</html>
