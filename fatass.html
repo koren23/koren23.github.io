@@ -47,6 +47,16 @@
     }
 </style>
 <script>
+    const storedData = localStorage.getItem("bmiData");
+    if (storedData) {
+        const parsedData = JSON.parse(storedData);
+        document.getElementById("1").value = parsedData.weight || "";
+        document.getElementById("2").value = parsedData.height || "";
+        document.getElementById("age").value = parsedData.age || "";
+        document.getElementById("3").value = parsedData.gender || "";
+        document.getElementById("4").value = parsedData.exerciseLevel || "";
+    }
+
     document.getElementById("myForm").addEventListener("submit", function(event) {
         event.preventDefault();
         const weight = document.getElementById("1").value;
@@ -55,7 +65,7 @@
         const gender = document.getElementById("3").value;
         const exerciseLevel = document.getElementById("4").value;
         const errorMessage = document.getElementById("when-clicked");
-        
+
         if (!weight || !height || !age || !gender || !exerciseLevel) {
             errorMessage.innerHTML = "Please fill in all the fields.";
             return;
@@ -91,13 +101,22 @@
         } else if (exerciseLevel === "Extra active (very hard exercise or a physically demanding job)") {
             calorieIntake = bmr * 1.9;
         }
-        
+
         const calorieDeficit = 7700;
         const calorieLossIntake = calorieIntake - (calorieDeficit / 7);
         const calorieGainIntake = calorieIntake + (calorieDeficit / 7);
-        
+
         document.getElementById("calories").innerHTML = "Calories needed to maintain weight: " + calorieIntake.toFixed(0);
         document.getElementById("lcalories").innerHTML = "Calories needed for weight loss (1kg per week): " + calorieLossIntake.toFixed(0);
         document.getElementById("gcalories").innerHTML = "Calories needed for weight gain (1kg per week): " + calorieGainIntake.toFixed(0);
+
+        const userData = {
+            weight: weight,
+            height: height,
+            age: age,
+            gender: gender,
+            exerciseLevel: exerciseLevel
+        };
+        localStorage.setItem("bmiData", JSON.stringify(userData));
     });
 </script>
