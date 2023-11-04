@@ -4,7 +4,7 @@
     </head>
     <body>
         <table>
-            <tr>
+            <tr onclick="myFunction()">
                 <th>תאריך</th>
                 <th>שולם</th>
             </tr>
@@ -40,6 +40,11 @@
             <tr><td></td><td>לא</td></tr>
         </table>
     </body>
+    <script>
+function myFunction() {
+  location.replace("index")
+}
+</script>
     <style>
         body {background-color: rgb(133, 160, 134);}
         table {
