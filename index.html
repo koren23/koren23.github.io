@@ -15,14 +15,13 @@
         position: absolute;
         padding: 8px;
         font-size: 16px;
-        text-align:center;
       }
     </style>
   </head>
   <body>
     <div class="container" id="form-container">
       <form onsubmit="handleSubmit(event)">
-        <input type="text" id="psw" placeholder="Type dumbass" autocomplete="off">
+        <input type="text" id="psw" placeholder="Type dumbass" autocomplete="on">
       </form>
     </div>
 
@@ -41,7 +40,7 @@
           "github": "https://github.com/koren23",
           "fmhy": "https://fmhy.net/videopiracyguide",
           "instagram": "https://www.instagram.com/koren_ventura06/"
-        };
+         };
 
         if (redirects[val]) {
           window.open(redirects[val], "_blank");
