@@ -2,7 +2,7 @@
 <html>
   <head>
     <title>koren ventura</title>
-    <link rel="icon" href="/images/favicon.ico">
+    <link rel="icon" href="/images/favicon.ico" type="image/x-icon">
     <style>
       body {
         background: linear-gradient(100deg, #252525 50%, #b4b4b4 50%);
@@ -18,22 +18,30 @@
   </head>
   <body>
     <div class="container">
-      <form>
-        <label for="psw"></label>
-        <input type="text" id="psw" onkeydown="checkEnter(event)">
+      <form onsubmit="handleSubmit(event)">
+        <input type="text" id="psw" placeholder="Type dumbass">
       </form>
     </div>
 
     <script>
-      function password() {
-        const val = document.querySelector('input').value;
-        window.location.replace("https://koren23.github.io/" + val);
-      }
+      function handleSubmit(event) {
+        event.preventDefault();
+        const val = document.getElementById("psw").value.trim().toLowerCase();
 
-      function checkEnter(event) {
-        if (event.key === 'Enter') {
-          event.preventDefault();
-          password();
+        const redirects = {
+          "wishlist": "https://mywishlist.online/w/cn28lv/wishlist",
+          "gym2025": "https://docs.google.com/spreadsheets/d/1DIZaIj59-zhAa6L7CAIxDXgZfHx1Y5WoSp3bD-OZ2Sk/edit?usp=sharing",
+          "letterboxd": "https://letterboxd.com/korenv/",
+          "comics": "https://readcomiconline.li/",
+          "tv": "https://www.cineby.app/",
+          "avatar": "https://docs.google.com/document/d/1gOLsJHxLp2lrA7FRLxkfNqXGkyY8mVWMLivXmj3KGdY/edit?usp=sharing",
+
+        };
+
+        if (redirects[val]) {
+          window.open(redirects[val], "_blank");
+        } else {
+          alert("Unknown keyword: " + val);
         }
       }
     </script>
