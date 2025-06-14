@@ -1,0 +1,13 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>letterboxd</title>
+  </head>
+<body onload="myFunction()">
+<script>
+function myFunction() {
+  location.replace("https://letterboxd.com/korenv/")
+}
+</script>
+</body>
+</html> 
