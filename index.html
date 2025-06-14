@@ -13,11 +13,13 @@
         bottom: 48%;
         top: 48%;
         position: absolute;
+        padding: 8px;
+        font-size: 16px;
       }
     </style>
   </head>
   <body>
-    <div class="container">
+    <div class="container" id="form-container">
       <form onsubmit="handleSubmit(event)">
         <input type="text" id="psw" placeholder="Type dumbass" autocomplete="off">
       </form>
@@ -35,14 +37,20 @@
           "comics": "https://readcomiconline.li/",
           "tv": "https://www.cineby.app/",
           "avatar": "https://docs.google.com/document/d/1gOLsJHxLp2lrA7FRLxkfNqXGkyY8mVWMLivXmj3KGdY/edit?usp=sharing",
-          "github": "https://github.com/koren23",
-
+          "github": "https://github.com/koren23"
         };
 
         if (redirects[val]) {
           window.open(redirects[val], "_blank");
         } else {
           alert("Unknown location: " + val);
+
+          const container = document.getElementById("form-container");
+          container.innerHTML = `
+            <form onsubmit="handleSubmit(event)">
+              <input type="text" id="psw" placeholder="Type dumbass" autocomplete="off">
+            </form>
+          `;
         }
       }
     </script>
