@@ -1,26 +1,54 @@
-function handleSubmit(event) {
-  event.preventDefault();
-  const val = document.getElementById("psw").value.trim().toLowerCase();
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>koren ventura</title>
+    <link rel="icon" href="/images/favicon.ico" type="image/x-icon">
+    <style>
+      body {
+        background: linear-gradient(100deg, #252525 50%, #b4b4b4 50%);
+      }
+      input {
+        left: 40%;
+        right: 40%;
+        bottom: 48%;
+        top: 48%;
+        position: absolute;
+        padding: 8px;
+        font-size: 16px;
+        text-align:center;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="container">
+      <form onsubmit="handleSubmit(event)">
+        <input type="text" id="psw" placeholder="Type dumbass" autocomplete="off">
+      </form>
+    </div>
 
-  const redirects = {
-    "wishlist": "https://mywishlist.online/w/cn28lv/wishlist",
-    "gym2025": "https://docs.google.com/spreadsheets/d/1DIZaIj59-zhAa6L7CAIxDXgZfHx1Y5WoSp3bD-OZ2Sk/edit?usp=sharing",
-    "letterboxd": "https://letterboxd.com/korenv/",
-    "comics": "https://readcomiconline.li/",
-    "tv": "https://www.cineby.app/",
-    "avatar": "https://docs.google.com/document/d/1gOLsJHxLp2lrA7FRLxkfNqXGkyY8mVWMLivXmj3KGdY/edit?usp=sharing",
-    "github": "https://github.com/koren23",
-    "fmhy": "https://fmhy.net/videopiracyguide",
-    "instagram": "https://www.instagram.com/koren_ventura06/"
-  };
+    <script>
+      function handleSubmit(event) {
+        event.preventDefault();
+        const val = document.getElementById("psw").value.trim().toLowerCase();
 
-  if (val === "all") {
-    for (const key in redirects) {
-      window.open(redirects[key], "_blank");
-    }
-  } else if (redirects[val]) {
-    window.open(redirects[val], "_blank");
-  } else {
-    alert("Unknown location: " + val);
-  }
-}
+        const redirects = {
+          "wishlist": "https://mywishlist.online/w/cn28lv/wishlist",
+          "gym2025": "https://docs.google.com/spreadsheets/d/1DIZaIj59-zhAa6L7CAIxDXgZfHx1Y5WoSp3bD-OZ2Sk/edit?usp=sharing",
+          "letterboxd": "https://letterboxd.com/korenv/",
+          "comics": "https://readcomiconline.li/",
+          "tv": "https://www.cineby.app/",
+          "avatar": "https://docs.google.com/document/d/1gOLsJHxLp2lrA7FRLxkfNqXGkyY8mVWMLivXmj3KGdY/edit?usp=sharing",
+          "github": "https://github.com/koren23",
+          "fmhy": "https://fmhy.net/videopiracyguide",
+          "instagram": "https://www.instagram.com/koren_ventura06/"
+        };
+
+        if (redirects[val]) {
+          window.open(redirects[val], "_blank");
+        } else {
+          alert("Unknown location: " + val);
+        }
+      }
+    </script>
+  </body>
+</html>
