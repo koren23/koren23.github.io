@@ -27,41 +27,35 @@
     </div>
 
     <script>
+      const redirects = {
+        "wishlist": "https://mywishlist.online/w/cn28lv/wishlist",
+        "gym2025": "https://docs.google.com/spreadsheets/d/1DIZaIj59-zhAa6L7CAIxDXgZfHx1Y5WoSp3bD-OZ2Sk/edit?usp=sharing",
+        "letterboxd": "https://letterboxd.com/korenv/",
+        "comics": "https://readcomiconline.li/",
+        "tv": "https://www.cineby.app/",
+        "avatar": "https://docs.google.com/document/d/1gOLsJHxLp2lrA7FRLxkfNqXGkyY8mVWMLivXmj3KGdY/edit?usp=sharing",
+        "github": "https://github.com/koren23",
+        "fmhy": "https://fmhy.net/videopiracyguide",
+        "instagram": "https://www.instagram.com/koren_ventura06/"
+      };
+
+      const redirectKeys = Object.keys(redirects);
+
       function handleSubmit(event) {
         event.preventDefault();
-        const val = document.getElementById("psw").value.trim().toLowerCase();
+        const input = document.getElementById("psw").value.trim().toLowerCase();
+        if (input === "") return;
 
-        const redirects = {
-          "wishlist": "https://mywishlist.online/w/cn28lv/wishlist",
-          "gym2025": "https://docs.google.com/spreadsheets/d/1DIZaIj59-zhAa6L7CAIxDXgZfHx1Y5WoSp3bD-OZ2Sk/edit?usp=sharing",
-          "letterboxd": "https://letterboxd.com/korenv/",
-          "comics": "https://readcomiconline.li/",
-          "tv": "https://www.cineby.app/",
-          "avatar": "https://docs.google.com/document/d/1gOLsJHxLp2lrA7FRLxkfNqXGkyY8mVWMLivXmj3KGdY/edit?usp=sharing",
-          "github": "https://github.com/koren23",
-          "fmhy": "https://fmhy.net/videopiracyguide",
-          "instagram": "https://www.instagram.com/koren_ventura06/"
-        };
+        if (input === "list") {
+          const listText = redirectKeys.map((key, index) => `${index + 1}. ${key}`).join("\n");
+          alert("Available links:\n" + listText);
+          return;
+        }
 
-        const keys = Object.keys(redirects);
-
-        if (!isNaN(val) && val !== "") {
-          const index = parseInt(val, 10) - 1;
-          if (index >= 0 && index < keys.length) {
-            const key = keys[index];
-            window.open(redirects[key], "_blank");
-          } else {
-            alert("Number out of range");
-          }
-
-        } else if (val === "count") {
-          alert("There are " + keys.length + " available links.");
-
-        } else if (redirects[val]) {
-          window.open(redirects[val], "_blank");
-
+        if (redirects[input]) {
+          window.open(redirects[input], "_blank");
         } else {
-          alert("Unknown adress or function: " + val);
+          alert("Unknown address or function: " + input);
         }
       }
     </script>
