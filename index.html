@@ -15,14 +15,14 @@
         position: absolute;
         padding: 8px;
         font-size: 16px;
-        text-align:center;
+        text-align: center;
       }
     </style>
   </head>
   <body>
     <div class="container">
       <form onsubmit="handleSubmit(event)">
-        <input type="text" id="psw" placeholder="Type dumbass" autocomplete="off">
+        <input type="text" id="psw" placeholder="Insert adress or function" autocomplete="off">
       </form>
     </div>
 
@@ -43,10 +43,25 @@
           "instagram": "https://www.instagram.com/koren_ventura06/"
         };
 
-        if (redirects[val]) {
+        const keys = Object.keys(redirects);
+
+        if (!isNaN(val) && val !== "") {
+          const index = parseInt(val, 10) - 1;
+          if (index >= 0 && index < keys.length) {
+            const key = keys[index];
+            window.open(redirects[key], "_blank");
+          } else {
+            alert("Number out of range");
+          }
+
+        } else if (val === "count") {
+          alert("There are " + keys.length + " available links.");
+
+        } else if (redirects[val]) {
           window.open(redirects[val], "_blank");
+
         } else {
-          alert("Unknown location: " + val);
+          alert("Unknown adress or function: " + val);
         }
       }
     </script>
