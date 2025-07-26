@@ -6,6 +6,8 @@
     <style>
       body {
         background: linear-gradient(100deg, #252525 50%, #b4b4b4 50%);
+        margin: 0;
+        font-family: sans-serif;
       }
       input {
         left: 40%;
@@ -71,7 +73,8 @@
         }
       }
 
-    const pathname = window.location.pathname.slice(1).toLowerCase(); 
+      // Redirect if visiting /something directly
+      const pathname = window.location.pathname.slice(1).toLowerCase();
       if (pathname && redirects[pathname]) {
         window.location.replace(redirects[pathname]);
       }
