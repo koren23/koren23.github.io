@@ -22,52 +22,59 @@
   <body>
     <div class="container">
       <form onsubmit="handleSubmit(event)">
-        <input type="text" id="psw" placeholder="Insert adress or function" autocomplete="off">
+        <input type="text" id="psw" placeholder="Insert address or function" autocomplete="off">
       </form>
     </div>
-<script>
-  const redirects = {
-    "github": "https://github.com/koren23",
-    "wishlist": "https://mywishlist.online/w/cn28lv/wishlist",
-    "comics": "https://readcomiconline.li/",
-    "avatar": "https://docs.google.com/document/d/1gOLsJHxLp2lrA7FRLxkfNqXGkyY8mVWMLivXmj3KGdY/edit?usp=sharing",
-    "starwars": "https://docs.google.com/spreadsheets/d/14KOOgBTsgWQyAhDtF7exJwB2OPIG3SEB-WRy3NhwL7Q/edit?usp=sharing",
-    "gym2025": "https://docs.google.com/spreadsheets/d/1DIZaIj59-zhAa6L7CAIxDXgZfHx1Y5WoSp3bD-OZ2Sk/edit?usp=sharing",
-    "letterboxd": "https://letterboxd.com/korenv/",
-    "cibeny": "https://www.cineby.app/",
-    "fmhy": "https://fmhy.net/videopiracyguide",
-    "ebooks": "https://z-lib.gd/",
-    "audiobooks": "https://tokybook.com/",
-    "audibook": "https://staraudiobook.net/",
-    "yugiohread": "https://bato.si/title/59674-yu-gi-oh",
-    "yugioh": "https://docs.google.com/spreadsheets/d/1CQs3NmF-lOeJrM1fSal5MZIhS9v7nMiHE8JrMOnLmNY/edit?gid=0#gid=0"
-  };
 
-  const redirectKeys = Object.keys(redirects);
+    <script>
+      const redirects = {
+        "github": "https://github.com/koren23",
+        "wishlist": "https://mywishlist.online/w/cn28lv/wishlist",
+        "comics": "https://readcomiconline.li/",
+        "avatar": "https://docs.google.com/document/d/1gOLsJHxLp2lrA7FRLxkfNqXGkyY8mVWMLivXmj3KGdY/edit?usp=sharing",
+        "starwars": "https://docs.google.com/spreadsheets/d/14KOOgBTsgWQyAhDtF7exJwB2OPIG3SEB-WRy3NhwL7Q/edit?usp=sharing",
+        "gym2025": "https://docs.google.com/spreadsheets/d/1DIZaIj59-zhAa6L7CAIxDXgZfHx1Y5WoSp3bD-OZ2Sk/edit?usp=sharing",
+        "letterboxd": "https://letterboxd.com/korenv/",
+        "cibeny": "https://www.cineby.app/",
+        "fmhy": "https://fmhy.net/videopiracyguide",
+        "ebooks": "https://z-lib.gd/",
+        "audiobooks": "https://tokybook.com/",
+        "audibook": "https://staraudiobook.net/",
+        "yugiohread": "https://bato.si/title/59674-yu-gi-oh",
+        "yugioh": "https://docs.google.com/spreadsheets/d/1CQs3NmF-lOeJrM1fSal5MZIhS9v7nMiHE8JrMOnLmNY/edit?gid=0#gid=0"
+      };
 
-  function handleSubmit(event) {
-    event.preventDefault();
-    const input = document.getElementById("psw").value.trim().toLowerCase();
-    if (input === "") return;
+      const redirectKeys = Object.keys(redirects);
 
-    if (input === "list") {
-      const listText = redirectKeys.map((key, index) => `${index + 1}. ${key}`).join("\n");
-      alert("Available links:\n" + listText);
-      return;
-    }
-    const inputNumber = parseInt(input);
-    if (!isNaN(inputNumber) && inputNumber >= 1 && inputNumber <= redirectKeys.length) {
-      const key = redirectKeys[inputNumber - 1];
-      window.open(redirects[key], "_blank");
-      return;
-    }
+      function handleSubmit(event) {
+        event.preventDefault();
+        const input = document.getElementById("psw").value.trim().toLowerCase();
+        if (input === "") return;
 
-    if (redirects[input]) {
-      window.open(redirects[input], "_blank");
-    } else {
-      alert("Unknown address or function: " + input);
-    }
-  }
-</script>
+        if (input === "list") {
+          const listText = redirectKeys.map((key, index) => `${index + 1}. ${key}`).join("\n");
+          alert("Available links:\n" + listText);
+          return;
+        }
+
+        const inputNumber = parseInt(input);
+        if (!isNaN(inputNumber) && inputNumber >= 1 && inputNumber <= redirectKeys.length) {
+          const key = redirectKeys[inputNumber - 1];
+          window.open(redirects[key], "_blank");
+          return;
+        }
+
+        if (redirects[input]) {
+          window.open(redirects[input], "_blank");
+        } else {
+          alert("Unknown address or function: " + input);
+        }
+      }
+
+    const pathname = window.location.pathname.slice(1).toLowerCase(); 
+      if (pathname && redirects[pathname]) {
+        window.location.replace(redirects[pathname]);
+      }
+    </script>
   </body>
 </html>
