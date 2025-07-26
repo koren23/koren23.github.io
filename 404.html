@@ -29,11 +29,11 @@
         if (redirects[path]) {
           window.location.replace(redirects[path]);
         } else {
-          window.location.replace('/index.html');
+          window.location.replace('/');
         }
       } catch (e) {
         console.error(e);
-        window.location.replace('/index.html');
+        window.location.replace('/');
       }
     }
     redirect();
@@ -41,8 +41,8 @@
 </head>
 <body>
   <div>
-    Checking link and redirecting...<br>
-    <small>If you are not redirected automatically, <a href="/index.html" style="color:#eee; text-decoration: underline;">click here</a>.</small>
+    Checking link and redirecting...<br />
+    <small>If you are not redirected automatically, <a href="/" style="color:#eee; text-decoration: underline;">click here</a>.</small>
   </div>
 </body>
 </html>
