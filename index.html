@@ -1,30 +1,86 @@
 <!DOCTYPE html>
 <html>
-<head>
-  <meta charset="UTF-8" />
-  <title>Redirecting...</title>
-  <script>
-    async function redirect() {
-      try {
-        const response = await fetch('/redirects.json');
-        if (!response.ok) throw new Error('Failed to load redirects');
-        const redirects = await response.json();
-
-        const path = window.location.pathname.slice(1).toLowerCase();
-        if (redirects[path]) {
-          window.location.replace(redirects[path]);
-        } else {
-          window.location.replace('/index.html');
-        }
-      } catch (e) {
-        console.error(e);
-        window.location.replace('/index.html');
+  <head>
+    <title>koren ventura</title>
+    <link rel="icon" href="/images/favicon.ico" type="image/x-icon" />
+    <style>
+      body {
+        background: linear-gradient(100deg, #252525 50%, #b4b4b4 50%);
       }
-    }
-    redirect();
-  </script>
-</head>
-<body>
-  <p>Checking link and redirecting...</p>
-</body>
+      input {
+        left: 40%;
+        right: 40%;
+        bottom: 48%;
+        top: 48%;
+        position: absolute;
+        padding: 8px;
+        font-size: 16px;
+        text-align: center;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="container">
+      <form onsubmit="handleSubmit(event)">
+        <input
+          type="text"
+          id="psw"
+          placeholder="Insert address or function"
+          autocomplete="off"
+        />
+      </form>
+    </div>
+    <script>
+      let redirects = {};
+      let redirectKeys = [];
+
+      async function loadRedirects() {
+        try {
+          const response = await fetch('/redirects.json');
+          if (!response.ok) throw new Error('Failed to load redirects');
+          redirects = await response.json();
+          redirectKeys = Object.keys(redirects);
+        } catch (e) {
+          alert('Error loading redirect list.');
+          console.error(e);
+        }
+      }
+
+      function handleSubmit(event) {
+        event.preventDefault();
+        const input = document.getElementById('psw').value.trim().toLowerCase();
+        if (input === '') return;
+
+        if (input === 'list') {
+          const listText = redirectKeys
+            .map((key, index) => `${index + 1}. ${key}`)
+            .join('\n');
+          alert('Available links:\n' + listText);
+          return;
+        }
+
+        const inputNumber = parseInt(input);
+        if (!isNaN(inputNumber) && inputNumber >= 1 && inputNumber <= redirectKeys.length) {
+          const key = redirectKeys[inputNumber - 1];
+          window.open(redirects[key], '_blank');
+          return;
+        }
+
+        if (redirects[input]) {
+          window.open(redirects[input], '_blank');
+        } else {
+          alert('Unknown address or function: ' + input);
+        }
+      }
+
+      loadRedirects();
+
+      window.addEventListener('DOMContentLoaded', () => {
+        const pathname = window.location.pathname.slice(1).toLowerCase();
+        if (pathname && redirects[pathname]) {
+          window.location.replace(redirects[pathname]);
+        }
+      });
+    </script>
+  </body>
 </html>
