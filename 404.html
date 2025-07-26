@@ -3,6 +3,21 @@
 <head>
   <meta charset="UTF-8" />
   <title>Redirecting...</title>
+  <style>
+    body {
+      margin: 0;
+      height: 100vh;
+      background: linear-gradient(100deg, #252525 50%, #b4b4b4 50%);
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      font-family: sans-serif;
+      color: #eee;
+      font-size: 1.3rem;
+      text-align: center;
+      user-select: none;
+    }
+  </style>
   <script>
     async function redirect() {
       try {
@@ -25,6 +40,9 @@
   </script>
 </head>
 <body>
-  <p>Checking link and redirecting...</p>
+  <div>
+    Checking link and redirecting...<br>
+    <small>If you are not redirected automatically, <a href="/index.html" style="color:#eee; text-decoration: underline;">click here</a>.</small>
+  </div>
 </body>
 </html>
