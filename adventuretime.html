@@ -1,13 +1,90 @@
-<html>
-    <head>
-        <title>Adventure Time</title>
-        <link rel="icon" href="/images/favicon.ico" type="image/x-icon" />
-        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Adventure Time</title>
+    <link rel="icon" href="/images/favicon.ico" type="image/x-icon" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <style>
+        /* Desktop background */
+        body {
+            background: url("images/at_computer.jpg") center center / cover no-repeat fixed;
+            margin: 0;
+            height: 100vh;
+            color: black;
+        }
 
-    </head>
-    <body>
-        <div id="episode-counter" style="text-align:center; font-size:20px; margin:20px; font-weight:bold; color:rgb(0, 0, 0);border: 2px solid black;"></div>
-        <table>
+        /* Mobile background */
+        @media (max-width: 768px) {
+            body {
+                background: url("images/at_phone.jpg") center center / cover no-repeat;
+                background-attachment: scroll; /* safer on mobile */
+            }
+
+            #episode-counter {
+                color: white;                         /* text visible on dark background */
+                background-color: rgba(0,0,0,0.5);    /* optional semi-transparent background */
+                border: 2px solid black;
+            }
+
+            th, td {
+                font-size: 12px; 
+                white-space: normal; 
+                word-break: break-word; 
+            }
+        }
+
+        /* Episode counter styling */
+        #episode-counter {
+            text-align: center;
+            font-size: 20px;
+            margin: 20px auto;
+            font-weight: bold;
+            border: 2px solid black;
+            padding: 10px;
+            width: fit-content; /* adjusts to text size */
+        }
+
+        /* Table and row styling */
+        tr.watched, tr.not_watched {
+            border-bottom: 1px solid black;
+        }
+
+        .plot {
+            display: none;
+        }
+
+        table {
+            margin: 0 auto;
+            text-align: center;
+            border-collapse: collapse;
+            width: 90%;
+            table-layout: fixed;
+        }
+
+        th, td {
+            text-align: center;
+            padding: 8px;
+            font-weight: bold;
+            word-wrap: break-word;
+        }
+
+        .not_watched {
+            background-color: rgba(0, 0, 0, 0);
+        }
+
+        .watched {
+            background-color: rgba(0, 0, 0, 0.353);
+        }
+
+        .Title {
+            background-color: rgba(0, 0, 0, 0.56);
+        }
+    </style>
+</head>
+<body>
+    <div id="episode-counter"></div>
+	<table>
             <tr class="Title"><th>Season</th><th>Episode</th><th>Title</th><th>Plot</th></tr>
             <tr class="Title"><th></th><th></th><th>Adventure Time Season One</th><th></th></tr>
                 <tr class="watched"><td>1</td><td>1</td><td>Slumber Party Panic</td><td class="plot"><p>Finn and Princess Bubblegum must protect the Candy Kingdom from a horde of candy zombies they accidentally created without the citizens of the Candy Kingdom finding out.</p></td></tr>
@@ -332,92 +409,24 @@
                 <tr class="not_watched"><td>2</td><td>9</td><td>TBA</td><td class="plot"><p>Plot TBA. (Episode scheduled for December 18, 2025.)</p></td></tr>
                 <tr class="not_watched"><td>2</td><td>10</td><td>TBA</td><td class="plot"><p>Plot TBA. (Episode scheduled for December 25, 2025.)</p></td></tr>
         </table>
-    </body>
-    <style>
-        body {
-            background: url("images/at_computer.jpg") center center / cover no-repeat fixed;
-            height: 100vh;
-            margin: 0;
-            color: black;
-        }
-
-        /* 📱 Mobile background with fixed-like behavior */
-        @media (max-width: 768px) {
-            body::before {
-                content: "";
-                position: fixed;
-                top: 0;
-                left: 0;
-                width: 100%;
-                height: 100%;
-                background: url("images/at_phone.jpg") center center / cover no-repeat;
-                z-index: -1;
-            }
-            #episode-counter {
-                background-color: white;
-            }
-            th, td {
-                font-size: 12px; /* smaller text fits better */
-                white-space: normal; /* allow natural line breaks */
-                word-break: break-word; /* break long words if needed */
-            }
-        }
-
-
-        
-        tr.watched, tr.not_watched {
-            border-bottom: 1px solid black;
-        }
-
-        .plot {
-            display: none; /* hide plot by default */
-        }
-
-        table {
-            margin: 0 auto;           /* center the table */
-            text-align: center;
-            border-collapse: collapse;
-            width: 90%;               /* table always takes 90% of screen width */
-            table-layout: fixed;      /* keeps column widths stable */
-        }
-
-        th, td {
-            text-align: center;
-            padding: 8px;
-            word-wrap: break-word;    /* wrap long text instead of expanding table */
-            font-weight: bold;
-        }
-
-        .not_watched {
-            background-color: rgba(0, 0, 0, 0);
-        }
-        .watched {
-            background-color: rgba(0, 0, 0, 0.353);
-        }
-        .Title {
-            background-color: rgba(0, 0, 0, 0.56);
-        }
-    </style>
-
     <script>
         // Count watched and not watched episodes
-            const watchedCount = document.querySelectorAll('tr.watched').length;
-            const notWatchedCount = document.querySelectorAll('tr.not_watched').length;
+        const watchedCount = document.querySelectorAll('tr.watched').length;
+        const notWatchedCount = document.querySelectorAll('tr.not_watched').length;
 
-            const counterDiv = document.getElementById('episode-counter');
-            counterDiv.textContent = `Watched Episodes: ${watchedCount} | Episodes Left: ${notWatchedCount}`;
-        // Get all episode rows (watched and not_watched)
+        const counterDiv = document.getElementById('episode-counter');
+        counterDiv.textContent = `Watched Episodes: ${watchedCount} | Episodes Left: ${notWatchedCount}`;
+
+        // Toggle plot display on row click
         const episodes = document.querySelectorAll('tr.watched, tr.not_watched');
-
         episodes.forEach(row => {
             row.addEventListener('click', () => {
                 const plot = row.querySelector('.plot');
-                if (plot.style.display === "none" || plot.style.display === "") {
-                    plot.style.display = "block"; // show plot
-                } else {
-                    plot.style.display = "none";  // hide plot
+                if(plot) {
+                    plot.style.display = (plot.style.display === "block") ? "none" : "block";
                 }
             });
         });
     </script>
+</body>
 </html>
