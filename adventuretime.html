@@ -7,8 +7,7 @@
     </head>
     <body>
         <div id="episode-counter" style="text-align:center; font-size:20px; margin:20px; font-weight:bold; color:rgb(0, 0, 0);border: 2px solid black;"></div>
-        <button id="jump-button" 
-        style="display:block; margin:20px auto; padding:10px 20px; font-size:18px; font-weight:bold;">Next Up</button>
+        <button id="jump-button" style="background-color: rgba(100, 100, 100, 0.5);display:block; margin:20px auto; padding:10px 20px; font-size:18px; font-weight:bold;">Next Up</button>
 
 		<table>
             <tr class="Title"><th>Season</th><th>Episode</th><th>Title</th><th>Plot</th></tr>
@@ -440,7 +439,7 @@
 
         // optional highlight effect
         firstNotWatched.style.transition = "background-color 0.6s ease";
-        firstNotWatched.style.backgroundColor = "#f7f497";
+        firstNotWatched.style.backgroundColor = "rgba(247, 244, 151, 0.5)";
 
         setTimeout(() => {
             firstNotWatched.style.backgroundColor = "";
