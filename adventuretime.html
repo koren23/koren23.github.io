@@ -403,13 +403,18 @@
 
     <script>
         // Count watched and not watched episodes
-            const watchedCount = document.querySelectorAll('tr.watched').length;
-            const notWatchedCount = document.querySelectorAll('tr.not_watched').length;
+		const watchedCount = document.querySelectorAll('tr.watched').length;
+		const notWatchedCount = document.querySelectorAll('tr.not_watched').length;
 
-            const counterDiv = document.getElementById('episode-counter');
-            counterDiv.textContent = `Watched Episodes: ${watchedCount} | Episodes Left: ${notWatchedCount}`;
-        // Get all episode rows (watched and not_watched)
-        const episodes = document.querySelectorAll('tr.watched, tr.not_watched');
+		const totalEpisodes = watchedCount + notWatchedCount;
+
+		// Calculate percentage
+		const watchedPercentage = totalEpisodes === 0 
+			? 0 
+			: ((watchedCount / totalEpisodes) * 100).toFixed(1);
+
+		const counterDiv = document.getElementById('episode-counter');
+		counterDiv.textContent = `Watched Episodes: ${watchedCount} | Episodes Left: ${notWatchedCount} | Progress: ${watchedPercentage}%`;
 
         episodes.forEach(row => {
             row.addEventListener('click', () => {
