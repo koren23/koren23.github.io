@@ -25,7 +25,7 @@
         <input
           type="text"
           id="psw"
-          placeholder="Insert address or function"
+          placeholder=""
           autocomplete="off"
         />
       </form>
@@ -56,13 +56,6 @@
             .map((key, index) => `${index + 1}. ${key}`)
             .join('\n');
           alert('Available links:\n' + listText);
-          return;
-        }
-
-        const inputNumber = parseInt(input);
-        if (!isNaN(inputNumber) && inputNumber >= 1 && inputNumber <= redirectKeys.length) {
-          const key = redirectKeys[inputNumber - 1];
-          window.open(redirects[key], '_blank');
           return;
         }
 
