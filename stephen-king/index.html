@@ -1,0 +1,236 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Stephen King Catalogue</title>
+<style>
+:root{color-scheme:dark;box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}
+*{box-sizing:border-box}
+html,body{margin:0;background:#000;color:#e8e8e8;font-family:Georgia,"Times New Roman",serif}
+header{text-align:center;padding:28px 16px 12px}
+h1{margin:0;font-size:clamp(26px,6vw,44px);letter-spacing:.12em;color:#c8102e;text-transform:uppercase}
+.sub{color:#888;font-size:14px;margin-top:6px}
+.bar{display:flex;flex-wrap:wrap;gap:8px;justify-content:center;padding:10px 12px 18px}
+button.f{background:#111;color:#ccc;border:1px solid #333;border-radius:20px;padding:8px 14px;font:inherit;font-size:13px;cursor:pointer}
+button.f.on{background:#c8102e;border-color:#c8102e;color:#fff}
+.prog{max-width:420px;margin:0 auto 6px;height:6px;background:#1a1a1a;border-radius:3px;overflow:hidden}
+.prog i{display:block;height:100%;background:#c8102e;width:0;transition:width .3s}
+main{max-width:1100px;margin:0 auto;padding:0 12px 40px}
+h2{font-size:15px;color:#c8102e;border-bottom:1px solid #222;padding-bottom:4px;margin:26px 0 12px;letter-spacing:.2em}
+.grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(104px,1fr));gap:12px}
+.book{aspect-ratio:2/3;border-radius:4px;cursor:pointer;position:relative;overflow:hidden;padding:8px;display:flex;flex-direction:column;justify-content:space-between;text-align:center;border:1px solid #222;background:#0b0b0b;color:#555;transition:transform .15s}
+.book:active{transform:scale(.96)}
+.book .a{font-size:8px;letter-spacing:.2em;text-transform:uppercase}
+.book .t{font-size:13px;line-height:1.2;font-weight:bold}
+.book .y{font-size:11px}
+.book.read{border-color:transparent;color:#fff;box-shadow:0 4px 14px rgba(0,0,0,.8);background:linear-gradient(160deg,hsl(var(--h) 70% 28%),hsl(var(--h) 60% 8%))}
+.book.read .t{font-size:15px;text-shadow:0 2px 6px #000}
+.book.read::after{content:"";position:absolute;inset:5px;border:1px solid rgba(255,255,255,.25);pointer-events:none}
+.book.b .a::after{content:" · Bachman"}
+.empty{color:#666;text-align:center;padding:40px}
+.book.has{padding:0}
+.cv{position:absolute;inset:0;width:100%;height:100%;object-fit:cover}
+.book.has .dots{z-index:2}
+.book.has::after{display:none}
+.book.has>.a,.book.has>.t,.book.has>.y{visibility:hidden}
+.dots{position:absolute;top:5px;right:5px;display:flex;flex-direction:column;gap:3px}
+.dots i{width:7px;height:7px;border-radius:50%;display:block;box-shadow:0 0 0 1px rgba(0,0,0,.6)}
+.cam{position:absolute;bottom:5px;right:5px;z-index:2;background:rgba(0,0,0,.65);border:1px solid #555;color:#fff;border-radius:50%;width:28px;height:28px;font-size:13px;padding:0;cursor:pointer}
+button.u{background:#111;color:#ccc;border:1px solid var(--c,#333);border-radius:20px;padding:7px 12px;font:inherit;font-size:12px;cursor:pointer}
+button.u.on{background:var(--c,#c8102e);color:#000;font-weight:bold}
+#udesc{color:#999;font-size:13px;min-height:18px;margin-bottom:6px}
+</style>
+</head>
+<body>
+<header>
+<h1>Stephen King</h1>
+<div class="sub" id="count"></div>
+<div class="sub">Tap a book to mark it read and its cover appears</div>
+</header>
+<div class="prog"><i id="bar"></i></div>
+<div class="bar">
+<button class="f on" data-f="all">All</button>
+<button class="f" data-f="read">Read</button>
+<button class="f" data-f="unread">Unread</button>
+<button class="f" id="sort">Oldest first</button>
+<button class="f" id="dl">Download all covers</button>
+<button class="f" id="sv">Save offline copy</button>
+<div class="sub" id="st" style="width:100%"></div>
+</div>
+<div class="bar" id="uni"></div>
+<div class="sub" id="udesc" style="text-align:center;padding:0 16px"></div>
+<input type="file" id="file" accept="image/*" hidden>
+<main id="main"></main>
+<script>
+const raw=`1974|Carrie
+1975|’Salem’s Lot
+1977|The Shining
+1977|Rage*
+1978|Night Shift
+1978|The Stand
+1979|The Dead Zone
+1979|The Long Walk*
+1980|Firestarter
+1981|Roadwork*
+1981|Cujo
+1981|Danse Macabre
+1982|The Running Man*
+1982|The Gunslinger
+1982|Different Seasons
+1983|Pet Sematary
+1983|Christine
+1983|Cycle of the Werewolf
+1984|The Talisman
+1984|Thinner*
+1985|Skeleton Crew
+1985|The Bachman Books*
+1986|It
+1987|The Eyes of the Dragon
+1987|Misery
+1987|The Tommyknockers
+1987|The Drawing of the Three
+1989|The Dark Half
+1990|Four Past Midnight
+1991|The Waste Lands
+1991|Needful Things
+1992|Gerald’s Game
+1992|Dolores Claiborne
+1993|Nightmares & Dreamscapes
+1994|Insomnia
+1995|Rose Madder
+1996|The Green Mile
+1996|Desperation
+1996|The Regulators*
+1997|Wizard and Glass
+1998|Bag of Bones
+1999|The Girl Who Loved Tom Gordon
+1999|Hearts in Atlantis
+2000|On Writing
+2001|Dreamcatcher
+2001|Black House
+2002|From a Buick 8
+2002|Everything’s Eventual
+2003|Wolves of the Calla
+2004|Song of Susannah
+2004|The Dark Tower
+2005|The Colorado Kid
+2006|Cell
+2006|Lisey’s Story
+2007|Blaze*
+2008|Duma Key
+2008|Just After Sunset
+2009|Under the Dome
+2010|Full Dark, No Stars
+2010|Blockade Billy
+2011|11/22/63
+2012|The Wind Through the Keyhole
+2013|Joyland
+2013|Doctor Sleep
+2014|Mr. Mercedes
+2014|Revival
+2015|Finders Keepers
+2015|The Bazaar of Bad Dreams
+2016|End of Watch
+2017|Sleeping Beauties
+2018|The Outsider
+2018|Elevation
+2019|The Institute
+2020|If It Bleeds
+2021|Later
+2021|Billy Summers
+2022|Fairy Tale
+2023|Holly
+2024|You Like It Darker
+2025|Never Flinch`;
+const books=raw.split("\n").map((l,i)=>{const[p,t]=l.split("|");const b=t.endsWith("*");return{id:i,y:+p,t:b?t.slice(0,-1):t,b,h:(i*47+10)%360}});
+let read=new Set(),filter="all",desc=false,uni="all",covers={},auto={},bad=new Set(),pending=null;
+const U=[
+["cr","Castle Rock","#e8892b","The fictional Maine town where so much of King’s horror lands.",["The Dead Zone","Cujo","Different Seasons","The Dark Half","Needful Things","Four Past Midnight"]],
+["derry","Derry","#3b9ad9","The cursed Maine city of Pennywise and recurring cycles of evil.",["It","Insomnia","Bag of Bones","Dreamcatcher","11/22/63"]],
+["dt","Dark Tower","#a566e0","The core series, plus books tied in through Flagg, the Tower and other worlds.",["The Gunslinger","The Drawing of the Three","The Waste Lands","Wizard and Glass","Wolves of the Calla","Song of Susannah","The Dark Tower","The Wind Through the Keyhole","The Eyes of the Dragon","The Talisman","Black House","’Salem’s Lot","The Stand","Insomnia","Hearts in Atlantis","Rose Madder","Desperation","The Dark Half","Needful Things","It","Everything’s Eventual"]],
+["hodges","Hodges & Holly","#2ecc71","Mr. Mercedes trilogy and the books that follow Holly Gibney.",["Mr. Mercedes","Finders Keepers","End of Watch","If It Bleeds","The Outsider","Holly"]],
+["jl","Jerusalem’s Lot","#e0334f","The vampire-haunted Maine town.",["’Salem’s Lot","Night Shift"]],
+["shine","The Shining","#e6d34a","Danny Torrance, the Overlook and what came after.",["The Shining","Doctor Sleep"]]
+];
+const EMBEDDED={};
+try{covers=JSON.parse(localStorage.getItem("sk-covers")||"{}")}catch(e){}
+covers=Object.assign({},EMBEDDED,covers);
+try{auto=JSON.parse(localStorage.getItem("sk-auto")||"{}")}catch(e){}
+const tried=new Set();
+async function ensureCover(id){
+if(covers[id]||auto[id]||tried.has(id))return;tried.add(id);
+const b=books[id],q=b.t.replace(/’/g,"'");let u=null;
+try{const r=await fetch("https://openlibrary.org/search.json?title="+encodeURIComponent(q)+"&author=stephen+king&limit=10&fields=cover_i");const d=await r.json();const h=(d.docs||[]).find(x=>x.cover_i);if(h)u="https://covers.openlibrary.org/b/id/"+h.cover_i+"-M.jpg"}catch(e){}
+if(!u){try{const r=await fetch("https://www.googleapis.com/books/v1/volumes?q="+encodeURIComponent('intitle:"'+q+'" inauthor:"stephen king"')+"&maxResults=10");const d=await r.json();const h=(d.items||[]).find(x=>x.volumeInfo&&x.volumeInfo.imageLinks);if(h)u=(h.volumeInfo.imageLinks.thumbnail||h.volumeInfo.imageLinks.smallThumbnail).replace("http://","https://")}catch(e){}}
+if(u){auto[id]=u;try{localStorage.setItem("sk-auto",JSON.stringify(auto))}catch(e){}render()}else tried.delete(id);
+}
+document.addEventListener("error",e=>{const t=e.target;if(t&&t.classList&&t.classList.contains("cv")){const el=t.closest(".book");bad.add(+el.dataset.id);t.remove();el.classList.remove("has")}},true);
+function saveCovers(){try{localStorage.setItem("sk-covers",JSON.stringify(covers))}catch(e){alert("Storage is full, so that cover could not be saved.")}}
+const ut={};books.forEach(b=>ut[b.t]=[]);U.forEach(u=>u[4].forEach(t=>{if(ut[t])ut[t].push(u)}));
+try{read=new Set(JSON.parse(localStorage.getItem("sk-read")||"[]"))}catch(e){}
+function save(){try{localStorage.setItem("sk-read",JSON.stringify([...read]))}catch(e){}}
+function esc(s){return s.replace(/&/g,"&amp;").replace(/</g,"&lt;")}
+function render(){
+const main=document.getElementById("main");
+let list=books.filter(b=>(filter==="all"||(filter==="read")===read.has(b.id))&&(uni==="all"||ut[b.t].some(u=>u[0]===uni)));
+if(desc)list=list.slice().reverse();
+let html="",cur=null;
+for(const b of list){
+if(b.y!==cur){if(cur!==null)html+="</div>";cur=b.y;html+=`<h2>${b.y}</h2><div class="grid">`}
+const r=read.has(b.id);
+const c=r&&!bad.has(b.id)&&(covers[b.id]||auto[b.id]);
+const dots=ut[b.t].map(u=>`<i style="background:${u[2]}"></i>`).join("");
+html+=`<div class="book${r?" read":""}${b.b?" b":""}${c?" has":""}" style="--h:${b.h}" data-id="${b.id}">${c?`<img class="cv" src="${c}" alt="">`:""}<div class="a">Stephen King</div><div class="t">${esc(b.t)}</div><div class="y">${b.y}</div><span class="dots">${dots}</span></div>`;
+}
+if(cur!==null)html+="</div>";
+main.innerHTML=html||'<div class="empty">Nothing here yet.</div>';
+document.getElementById("count").textContent=`${read.size} of ${books.length} books read`;
+document.getElementById("bar").style.width=(read.size/books.length*100)+"%";
+}
+document.getElementById("main").addEventListener("click",e=>{
+const el=e.target.closest(".book");if(!el)return;
+const id=+el.dataset.id;
+read.has(id)?read.delete(id):read.add(id);save();render();if(read.has(id))ensureCover(id);
+});
+document.querySelectorAll("button.f[data-f]").forEach(b=>b.onclick=()=>{
+filter=b.dataset.f;document.querySelectorAll("button.f[data-f]").forEach(x=>x.classList.toggle("on",x===b));render();
+});
+document.getElementById("sort").onclick=e=>{desc=!desc;e.target.textContent=desc?"Newest first":"Oldest first";render()};
+function chips(){
+const bar=document.getElementById("uni");
+bar.innerHTML=`<button class="u${uni==="all"?" on":""}" data-u="all">All universes</button>`+U.map(u=>`<button class="u${uni===u[0]?" on":""}" data-u="${u[0]}" style="--c:${u[2]}">${u[1]}</button>`).join("");
+const cur=U.find(u=>u[0]===uni);
+document.getElementById("udesc").textContent=cur?`${cur[3]} (${cur[4].length} books)`:"Colored dots on each book show which universes it connects to.";
+}
+document.getElementById("uni").addEventListener("click",e=>{const b=e.target.closest("button.u");if(!b)return;uni=b.dataset.u;chips();render()});
+document.getElementById("file").addEventListener("change",e=>{
+const f=e.target.files[0];e.target.value="";if(!f||pending===null)return;
+const id=pending,img=new Image();
+img.onload=()=>{const cv=document.createElement("canvas");cv.width=240;cv.height=360;const x=cv.getContext("2d");
+const s=Math.max(240/img.width,360/img.height),w=img.width*s,h=img.height*s;
+x.drawImage(img,(240-w)/2,(360-h)/2,w,h);
+covers[id]=cv.toDataURL("image/jpeg",0.8);saveCovers();render()};
+img.src=URL.createObjectURL(f);
+});
+function toData(url){return new Promise((res,rej)=>{const im=new Image();im.crossOrigin="anonymous";im.onload=()=>{try{const cv=document.createElement("canvas");cv.width=200;cv.height=300;const x=cv.getContext("2d");const s=Math.max(200/im.width,300/im.height),w=im.width*s,h=im.height*s;x.drawImage(im,(200-w)/2,(300-h)/2,w,h);res(cv.toDataURL("image/jpeg",0.8))}catch(e){rej(e)}};im.onerror=rej;im.src=url})}
+document.getElementById("dl").onclick=async()=>{
+const st=document.getElementById("st"),btn=document.getElementById("dl");btn.disabled=true;let n=0;
+for(const b of books){n++;st.textContent=`Downloading covers ${n}/${books.length}…`;
+if(!covers[b.id]){await ensureCover(b.id);if(auto[b.id]){try{covers[b.id]=await toData(auto[b.id])}catch(e){}}}}
+saveCovers();const have=books.filter(b=>covers[b.id]).length;
+st.textContent=have===0?"Could not download covers. Check your internet connection and open this page in Chrome or Safari.":`${have} of ${books.length} covers saved. Tap “Save offline copy” to keep them inside the file.`;
+btn.disabled=false;render();
+};
+document.getElementById("sv").onclick=()=>{
+const m=document.getElementById("main");m.innerHTML="";
+const j=JSON.stringify(covers);
+const html="<!DOCTYPE html>\n"+document.documentElement.outerHTML.replace(new RegExp("const EMBEDDED=\\{[\\s\\S]*?\\};\\n"),()=>"const EMBEDDED="+j+";\n");
+render();
+const a=document.createElement("a");a.href=URL.createObjectURL(new Blob([html],{type:"text/html"}));a.download="stephen-king-catalogue-offline.html";document.body.appendChild(a);a.click();a.remove();
+};
+chips();render();
+(async()=>{for(const id of read){await ensureCover(id)}})();
+</script>
+</body>
+</html>
