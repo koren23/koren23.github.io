@@ -77,11 +77,11 @@ body{
    path = folder/file in this repo or a full URL.
    img  = image file in the repo (e.g. "img/stephen-king.jpg"); optional, falls back to a gradient. */
 const SITES=[
-  {title:"Github",desc:"My Github account with all my projects and repositories",path:"https://github.com/koren23",img:"img/github.jpg",hue:210,tag:"Hub"},
-  {title:"Stephen King Catalogue",desc:"Browse and track every novel written by Stephen King",path:"stephen-king/",img:"img/stephen-king.jpg",hue:350,tag:"Library"},
-  {title:"Avatar Timeline",desc:"Every Avatar episode, movie, novel and comic in in-universe order, with an owned tracker",path:"avatar-timeline/",img:"img/avatar-timeline.jpg",hue:195,tag:"Timeline"},
-  {title:"Wishlist",desc:"My Wishlist",path:"https://wshl.st/koren",img:"img/wishlist.jpg",hue:140,tag:"Gifts"},
-  // {title:"My Next Site",desc:"Short description.",path:"my-next-site/",img:"img/next.jpg",hue:30,tag:"Project"},
+  {title:"Github",desc:"My Github account with all my projects and repositories",path:"https://github.com/koren23",img:"img/github.jpg",hue:210},
+  {title:"Stephen King Catalogue",desc:"Browse and track every novel written by Stephen King",path:"stephen-king/",img:"img/stephen-king.jpg",hue:350},
+  {title:"Avatar Timeline",desc:"Every Avatar episode, movie, novel and comic in in-universe order, with an owned tracker",path:"avatar-timeline/",img:"img/avatar-timeline.jpg",hue:195},
+  {title:"Wishlist",desc:"My Wishlist",path:"https://wshl.st/koren",img:"img/wishlist.jpg",hue:140},
+  // {title:"My Next Site",desc:"Short description.",path:"my-next-site/",img:"img/next.jpg",hue:30},
 ];
 
 const N=SITES.length,step=360/N,ring=document.getElementById("ring");
@@ -100,7 +100,7 @@ const cards=SITES.map((s,i)=>{
     `<div class="dots">${SITES.map((_,j)=>`<i class="${j===i?"on":""}"></i>`).join("")}</div>`+
     `<button class="arrow l" aria-label="Previous">${chev("M15 5l-7 7 7 7")}</button>`+
     `<button class="arrow r" aria-label="Next">${chev("M9 5l7 7-7 7")}</button>`+
-    `<div class="info"><div class="eyebrow">${esc(s.tag||"Website")}</div><h2 class="tt">${esc(s.title)}</h2>`+
+    `<div class="info"><h2 class="tt">${esc(s.title)}</h2>`+
     `<p class="ds">${esc(s.desc||"")}</p><span class="open">Open site ↗</span></div>`;
   const img=d.querySelector("img");if(img)img.onerror=()=>img.remove();
   d.querySelector(".l").onclick=e=>{e.stopPropagation();if(!justDragged)shift(-1)};
