@@ -1,0 +1,372 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Avatar Timeline</title>
+<!-- LIST LAST UPDATED: 2026-11-21. Data sources: Avatar Almanac timeline (avataralmanac.com/timeline-order) + Avatar Studios timeline. When updating, check for releases after this date. -->
+<link rel="icon" type="image/svg+xml" href="../favicon.svg">
+<style>
+:root{color-scheme:dark}
+*{box-sizing:border-box}
+body{margin:0;background:#0b0d10;color:#eee;font:15px/1.4 system-ui,-apple-system,"Segoe UI",sans-serif}
+.top{position:sticky;top:0;z-index:5;background:#0b0d10;border-bottom:1px solid #222;padding:10px 12px}
+.in{max-width:760px;margin:0 auto}
+.l1{display:flex;align-items:center;gap:10px;flex-wrap:wrap}
+.back{color:#9aa;text-decoration:none;font-size:13px}
+h1{font:700 19px Georgia,serif;margin:0}
+.stat{margin-left:auto;font-size:13px;color:#9aa}
+.l2{display:flex;gap:8px;margin-top:8px;flex-wrap:wrap}
+input,select{background:#161a1f;color:#eee;border:1px solid #2a3038;border-radius:8px;padding:7px 10px;font:inherit;font-size:14px;min-width:0}
+input{flex:1 1 150px}
+.seg{display:flex;border:1px solid #2a3038;border-radius:8px;overflow:hidden}
+.seg button{background:#161a1f;color:#9aa;border:0;padding:7px 12px;font:inherit;font-size:13px;cursor:pointer}
+.seg button.on{background:#2b6cb0;color:#fff}
+main{max-width:760px;margin:0 auto;padding:14px 12px 60px}
+h2{margin:26px 0 8px;font:700 17px Georgia,serif;color:#8fc7ff;display:flex;justify-content:space-between;align-items:baseline;gap:8px}
+h2 small{font:400 12px system-ui;color:#789;white-space:nowrap}
+.r{display:flex;align-items:center;gap:10px;padding:6px 8px;border-radius:8px;cursor:pointer;border-left:3px solid var(--c)}
+.r:hover{background:#13171c}
+.cv{flex:none;width:36px;height:52px;border-radius:4px;background:var(--c);object-fit:cover;display:block;color:#fff;font:700 15px/52px Georgia,serif;text-align:center;overflow:hidden}
+.tx{flex:1;min-width:0}
+.t{overflow-wrap:anywhere}
+.m{font-size:12px;color:#8a949e}
+.ck{flex:none;width:24px;height:24px;border-radius:6px;border:2px solid #3a4450;display:grid;place-items:center;color:transparent;font-size:15px;font-weight:700}
+.r.own .ck{background:#2f9e5b;border-color:#2f9e5b;color:#fff}
+.r:not(.own) .t{color:#c5ccd3}
+.r.own .t{color:#fff}
+.chips{display:flex;gap:6px;margin-top:8px;overflow-x:auto;scrollbar-width:none;padding-bottom:2px}
+.chips::-webkit-scrollbar{display:none}
+.chip{flex:none;background:#161a1f;color:#9aa;border:1px solid #2a3038;border-radius:99px;padding:5px 11px;font:inherit;font-size:12.5px;cursor:pointer;white-space:nowrap}
+.chip small{opacity:.65;margin-left:3px}
+.chip[aria-pressed=true]{background:hsl(var(--c) 55% 30%);border-color:hsl(var(--c) 65% 55%);color:#fff}
+.chip.clr{border-style:dashed}
+[hidden]{display:none!important}
+.upd{text-align:center;color:#567;font-size:12px;padding:0 0 30px}
+.none{text-align:center;color:#789;padding:50px 0}
+</style>
+</head>
+<body>
+<div class="top"><div class="in">
+  <div class="l1"><a class="back" href="../">← Homepage</a><h1>Avatar Timeline</h1><span class="stat" id="stat"></span></div>
+  <div class="l2">
+    <input id="q" type="search" placeholder="Search…" aria-label="Search">
+        <div class="seg" id="ow"><button data-v="all" class="on">All</button><button data-v="own">Owned</button><button data-v="not">Not owned</button></div>
+  </div>
+  <div class="chips" id="chips" role="group" aria-label="Filter by type"></div>
+</div></div>
+<main id="out"></main>
+<div class="upd">List last updated: 21 Nov 2026</div>
+<div class="none" id="none" hidden>Nothing matches.</div>
+<script>
+const TYPES={tv:["Episode",205],mv:["Movie",28],nv:["Novel",280],gn:["Graphic novel",350],cs:["Comic",40],ar:["Scrapbook",160]};
+const ERAS=[
+ {id:"unk",n:"Unknown era"},{id:"wan",n:"Avatar Wan"},{id:"szeto",n:"Avatar Szeto"},{id:"yang",n:"Avatar Yangchen"},{id:"kuruk",n:"Avatar Kuruk"},
+ {id:"kyo",n:"Avatar Kyoshi"},{id:"roku",n:"Avatar Roku"},{id:"war",n:"The Hundred Year War"},{id:"atla",n:"Avatar: The Last Airbender (99–100 AG)"},
+ {id:"aang",n:"Avatar Aang era (100–153 AG)"},{id:"korra",n:"Avatar Korra era"},{id:"hav",n:"Seven Havens (390 AG – present)"}
+];
+/* ---------- Data: Title | type | year | source/episode | note ---------- */
+const RAW={
+unk:`Wisdom|cs|c. 3829 BG|Patterns in Time|`,
+szeto:`A Quiet Flame|cs|XXX BG|Masters of the Elements|
+Shelter|cs|XXX BG|Masters of the Elements|`,
+yang:`The Dawn of Yangchen|nv|483 BG|YA novel|Yangchen uncovers a scheme to control trade with a weapon of mass destruction.
+The Legacy of Yangchen|nv|482 BG|YA novel|Yangchen assembles a team to calm clashing heads of state.`,
+kyo:`The Rise of Kyoshi|nv|296 BG|YA novel|Kyoshi rises from poverty, fighting pirates and Earth Kingdom corruption.
+The Shadow of Kyoshi|nv|295 BG|YA novel|Kyoshi enters Fire Nation politics as a bigger threat looms from the Spirit World.
+Off Duty|cs|290 BG|Masters of the Elements|`,
+roku:`The Reckoning of Roku|nv|66 BG|YA novel|Roku undertakes a secret mission for Sozin on a remote island with his friend Gyatso.
+The Awakening of Roku|nv|63 BG|YA novel|
+Earth & Water|cs|c. 55 BG|Masters of the Elements|`,
+war:`Jet: Rebels and Rhinos|gn|Unknown AG|Graphic novel|`,
+atla:`The Boy in the Iceberg|tv|99 AG|ATLA S1E1|
+The Avatar Returns|tv|99 AG|ATLA S1E2|
+The Southern Air Temple|tv|99 AG|ATLA S1E3|
+Don't Blow It!|cs|99 AG|The Lost Adventures|
+The Warriors of Kyoshi|tv|99 AG|ATLA S1E4|
+The Kyoshi Warriors – Issue #1|cs|99 AG|The Kyoshi Warriors|
+The Kyoshi Warriors – Issue #2|cs|99 AG|The Kyoshi Warriors|
+The Kyoshi Warriors – Issue #3|cs|99 AG|The Kyoshi Warriors|
+The King of Omashu|tv|99 AG|ATLA S1E5|
+Imprisoned|tv|99 AG|ATLA S1E6|
+Bee Calm|cs|99 AG|The Lost Adventures|
+Winter Solstice, Part 1: The Spirit World|tv|99 AG|ATLA S1E7|
+Winter Solstice, Part 2: Avatar Roku|tv|99 AG|ATLA S1E8|
+The Waterbending Scroll|tv|99 AG|ATLA S1E9|
+Jet|tv|99 AG|ATLA S1E10|
+The Great Divide|tv|100 AG|ATLA S1E11|
+The Storm|tv|100 AG|ATLA S1E12|
+The Blue Spirit|tv|100 AG|ATLA S1E13|
+The Fortuneteller|tv|100 AG|ATLA S1E14|
+Bato of the Water Tribe|tv|100 AG|ATLA S1E15|
+The Deserter|tv|100 AG|ATLA S1E16|
+Fruit-Stand Freestyle|cs|100 AG|The Lost Adventures|
+The Northern Air Temple|tv|100 AG|ATLA S1E17|
+Relics|cs|100 AG|The Lost Adventures|First released in Germany in 2010.
+The Waterbending Master|tv|100 AG|ATLA S1E18|
+The Siege of the North, Part 1|tv|100 AG|ATLA S1E19|
+The Siege of the North, Part 2|tv|100 AG|ATLA S1E20|
+The Avatar State|tv|100 AG|ATLA S2E1|
+The Cave of Two Lovers|tv|100 AG|ATLA S2E2|
+Return to Omashu|tv|100 AG|ATLA S2E3|
+Water War|cs|100 AG|The Lost Adventures|
+Origami|cs|100 AG|Team Avatar Tales|
+The Swamp|tv|100 AG|ATLA S2E4|
+Avatar Day|tv|100 AG|ATLA S2E5|Kyoshi defends her peninsula against Chin the Conqueror.
+The Blind Bandit|tv|100 AG|ATLA S2E6|
+Zuko Alone|tv|100 AG|ATLA S2E7|
+Lost and Found|cs|100 AG|Masters of the Elements|
+The Chase|tv|100 AG|ATLA S2E8|
+Bitter Work|tv|100 AG|ATLA S2E9|
+Katara and the Pirate's Silver|gn|100 AG|Graphic novel|Katara allies with river pirates while the others search for her.
+Sleepbending|cs|100 AG|The Lost Adventures|
+Lessons|cs|100 AG|The Lost Adventures|
+Sokka the Avatar|cs|100 AG|The Lost Adventures|
+Divided We Fall|cs|100 AG|The Lost Adventures|
+Reach for the Toph|cs|100 AG|The Lost Adventures|
+The Library|tv|100 AG|ATLA S2E10|
+The Desert|tv|100 AG|ATLA S2E11|
+Dirty is Only Skin Deep|cs|100 AG|The Lost Adventures|
+The Serpent's Pass|tv|100 AG|ATLA S2E12|
+The Drill|tv|100 AG|ATLA S2E13|
+City of Walls and Secrets|tv|100 AG|ATLA S2E14|
+The Tales of Ba Sing Se|tv|100 AG|ATLA S2E15|
+Appa's Lost Days|tv|100 AG|ATLA S2E16|
+Lake Laogai|tv|100 AG|ATLA S2E17|
+The Earth King|tv|100 AG|ATLA S2E18|
+The Guru|tv|100 AG|ATLA S2E19|
+The Crossroads of Destiny|tv|100 AG|ATLA S2E20|
+It's Only Natural|cs|100 AG|The Lost Adventures|
+Going Home Again|cs|100 AG|The Lost Adventures|
+The Bridge|cs|100 AG|The Lost Adventures|
+The Awakening|tv|100 AG|ATLA S3E1|
+The Headband|tv|100 AG|ATLA S3E2|
+Private Fire|cs|100 AG|The Lost Adventures|
+The Painted Lady|tv|100 AG|ATLA S3E3|
+Night Animals|cs|100 AG|The Lost Adventures|
+Sokka's Master|tv|100 AG|ATLA S3E4|
+Boys' Day Out|cs|100 AG|The Lost Adventures|
+The Substitute|cs|100 AG|Team Avatar Tales|
+The Beach|tv|100 AG|ATLA S3E5|
+Ember Island Arcade|cs|100 AG|The Lost Adventures|
+The Avatar and the Fire Lord|tv|100 AG|ATLA S3E6|Roku and Prince Sozin grow apart, and Sozin chooses conquest.
+The Runaway|tv|100 AG|ATLA S3E7|
+Monster Slayer|cs|100 AG|The Lost Adventures|First released in Germany in 2009.
+The Puppetmaster|tv|100 AG|ATLA S3E8|
+Combustion Man on a Train|cs|100 AG|The Lost Adventures|
+Nightmares and Daydreams|tv|100 AG|ATLA S3E9|
+Ramen Rumble|cs|100 AG|Masters of the Elements|
+The Day of Black Sun, Part 1: The Invasion|tv|100 AG|ATLA S3E10|
+The Day of Black Sun, Part 2: The Eclipse|tv|100 AG|ATLA S3E11|
+The Western Air Temple|tv|100 AG|ATLA S3E12|
+The Firebending Masters|tv|100 AG|ATLA S3E13|
+Dragon Days|cs|100 AG|The Lost Adventures|First released in Germany in 2009.
+Swordbending|cs|100 AG|The Lost Adventures|
+No Benders Allowed|cs|100 AG|The Lost Adventures|
+Suki, Alone|gn|100 AG|Graphic novel|Suki, imprisoned at Boiling Rock, starts a secret garden and rebellion.
+The Boiling Rock, Part 1|tv|100 AG|ATLA S3E14|
+Love is a Battlefield|cs|100 AG|The Lost Adventures|
+The Boiling Rock, Part 2|tv|100 AG|ATLA S3E15|
+The Southern Raiders|tv|100 AG|ATLA S3E16|
+The Ember Island Players|tv|100 AG|ATLA S3E17|
+Game Time|cs|100 AG|The Lost Adventures|
+Sozin's Comet, Part 1: The Phoenix King|tv|100 AG|ATLA S3E18|
+Sozin's Comet, Part 2: The Old Masters|tv|100 AG|ATLA S3E19|
+Bumi vs. Toph, Round One|cs|100 AG|The Lost Adventures|
+Sozin's Comet, Part 3: Into the Inferno|tv|100 AG|ATLA S3E20|
+Sozin's Comet, Part 4: Avatar Aang|tv|100 AG|ATLA S3E21|`,
+aang:`City of Echoes|nv|100 AG|YA novel|
+The Promise, Part One|gn|101 AG|Graphic novel|After the war, Aang and Zuko clash over the colonies.
+The Promise, Part Two|gn|101 AG|Graphic novel|
+The Promise, Part Three|gn|101 AG|Graphic novel|
+The Search, Part One|gn|101 AG|Graphic novel|Zuko seeks his mother.
+Rebound|cs|101 AG|Team Avatar Tales|
+The Search, Part Two|gn|101 AG|Graphic novel|
+The Search, Part Three|gn|101 AG|Graphic novel|
+Smoke and Shadow, Part One|gn|102 AG|Graphic novel|A rebel group tries to restore Ozai.
+The Rift, Part One|gn|102 AG|Graphic novel|Aang finds a refinery on sacred land run by Toph's father.
+The Rift, Part Two|gn|102 AG|Graphic novel|
+The Rift, Part Three|gn|102 AG|Graphic novel|
+Smoke and Shadow, Part Two|gn|102 AG|Graphic novel|
+Smoke and Shadow, Part Three|gn|102 AG|Graphic novel|
+North and South, Part One|gn|102 AG|Graphic novel|Katara and Sokka return to a South Pole rebuilt in the North's image.
+North and South, Part Two|gn|102 AG|Graphic novel|
+North and South, Part Three|gn|102 AG|Graphic novel|
+Shells|cs|102 AG|Team Avatar Tales|
+Sisters|cs|102 AG|Team Avatar Tales|
+Azula in the Spirit Temple|gn|102 AG|Graphic novel|Azula meets a solitary monk at a forest temple.
+Ashes of the Academy|gn|102 AG|Graphic novel|Kiyi joins the Royal Fire Academy.
+Imbalance, Part One|gn|102 AG|Graphic novel|A bender vs. nonbender conflict foreshadows Republic City.
+Imbalance, Part Two|gn|102 AG|Graphic novel|
+Imbalance, Part Three|gn|102 AG|Graphic novel|
+The Scarecrow|cs|102 AG|Team Avatar Tales|
+Toph Beifong's Metalbending Academy|gn|102 AG|Graphic novel|Toph enters an underground Earth Rumble tournament.
+Matcha Makers|cs|c. 102 AG|Free Comic Book Day 2021|
+The Bounty Hunter and the Tea Brewer|gn|c. 102 AG|Graphic novel|Iroh is captured by the bounty hunter June.
+Toph and the Boulder|cs|c. 102 AG|Team Avatar Tales|
+Sokka's Poem|cs|c. 102 AG|Team Avatar Tales|
+Avatar Aang: The Last Airbender|mv|c. 112 AG|Animated movie (Paramount+)|
+Legacy|ar|124 AG|Scrapbook|`,
+korra:`Friends for Life|cs|c. 158 AG|Patterns in Time|
+Skyscrapers|cs|c. 158 AG|Patterns in Time|
+Weaver's Ball|cs|c. 167 AG|Patterns in Time|
+Welcome to Republic City|tv|170 AG|Korra S1E1|
+A Leaf in the Wind|tv|170 AG|Korra S1E2|
+The Revelation|tv|170 AG|Korra S1E3|
+The Voice in the Night|tv|170 AG|Korra S1E4|
+The Spirit of Competition|tv|170 AG|Korra S1E5|
+And the Winner Is…|tv|170 AG|Korra S1E6|
+The Aftermath|tv|170 AG|Korra S1E7|
+When Extremes Meet|tv|170 AG|Korra S1E8|
+Out of the Past|tv|170 AG|Korra S1E9|
+Turning the Tides|tv|170 AG|Korra S1E10|
+Skeletons in the Closet|tv|170 AG|Korra S1E11|
+Endgame|tv|170 AG|Korra S1E12|
+Rebel Spirit|tv|171 AG|Korra S2E1|
+The Southern Lights|tv|171 AG|Korra S2E2|
+Civil Wars, Part 1|tv|171 AG|Korra S2E3|
+Civil Wars, Part 2|tv|171 AG|Korra S2E4|
+Peacekeepers|tv|171 AG|Korra S2E5|
+The Sting|tv|171 AG|Korra S2E6|
+Beginnings, Part 1|tv|171 AG|Korra S2E7|Wan's story, set in the distant past.
+Beginnings, Part 2|tv|171 AG|Korra S2E8|Wan's story, set in the distant past.
+The Guide|tv|171 AG|Korra S2E9|
+A New Spiritual Age|tv|171 AG|Korra S2E10|
+Night of a Thousand Stars|tv|171 AG|Korra S2E11|
+Harmonic Convergence|tv|171 AG|Korra S2E12|
+Darkness Falls|tv|171 AG|Korra S2E13|
+Light in the Dark|tv|171 AG|Korra S2E14|
+A Breath of Fresh Air|tv|171 AG|Korra S3E1|
+Rebirth|tv|171 AG|Korra S3E2|
+The Earth Queen|tv|171 AG|Korra S3E3|
+In Harm's Way|tv|171 AG|Korra S3E4|
+The Metal Clan|tv|171 AG|Korra S3E5|
+Old Wounds|tv|171 AG|Korra S3E6|
+Original Airbenders|tv|171 AG|Korra S3E7|
+The Terror Within|tv|171 AG|Korra S3E8|
+The Stakeout|tv|171 AG|Korra S3E9|
+Long Live the Queen|tv|171 AG|Korra S3E10|
+The Ultimatum|tv|171 AG|Korra S3E11|
+Enter the Void|tv|171 AG|Korra S3E12|
+Venom of the Red Lotus|tv|171 AG|Korra S3E13|
+Kya and the Secret of the Sand|gn|c. 172 AG|Graphic novel|
+Cat-Owl's Cradle|cs|c. 173 AG|Patterns in Time|
+After All These Years|tv|174 AG|Korra S4E1|
+Korra Alone|tv|174 AG|Korra S4E2|
+The Coronation|tv|174 AG|Korra S4E3|
+The Calling|tv|174 AG|Korra S4E4|
+Enemy at the Gates|tv|174 AG|Korra S4E5|
+The Battle of Zaofu|tv|174 AG|Korra S4E6|
+Reunion|tv|174 AG|Korra S4E7|
+Remembrances|tv|174 AG|Korra S4E8|
+Beyond the Wilds|tv|174 AG|Korra S4E9|
+Operation Beifong|tv|174 AG|Korra S4E10|
+Kuvira's Gambit|tv|174 AG|Korra S4E11|
+Day of the Colossus|tv|174 AG|Korra S4E12|
+The Last Stand|tv|174 AG|Korra S4E13|
+Turf Wars, Part One|gn|174 AG|Graphic novel|Republic City faces refugees and the Triple Threats crime syndicate.
+Turf Wars, Part Two|gn|174 AG|Graphic novel|
+Turf Wars, Part Three|gn|174 AG|Graphic novel|
+Lost Pets|cs|174 AG|Patterns in Time|
+An Avatar's Chronicle|ar|174 AG|Scrapbook|
+Ruins of the Empire, Part One|gn|174 AG|Graphic novel|Kuvira stands trial as Team Avatar stops a renegade commander.
+Ruins of the Empire, Part Two|gn|174 AG|Graphic novel|
+Ruins of the Empire, Part Three|gn|174 AG|Graphic novel|
+Legacy of the Fire Nation|ar|c. 174 AG|Scrapbook|
+The Mystery of Penquan Island|gn|c. 174 AG|Graphic novel|Mako and Bolin investigate a missing persons case tied to their mother.
+Clearing the Air|cs|c. 174 AG|Patterns in Time|
+A Change in the Wind|cs|c. 174 AG|Patterns in Time|
+Beach Wars|cs|c. 174 AG|Masters of the Elements|`,
+hav:`On the Horizon|tv|399 AG|Seven Havens S1E1|
+Into the Storm|tv|399 AG|Seven Havens S1E2|
+The Order|tv|399 AG|Seven Havens S1E3|
+The Faceless|tv|399 AG|Seven Havens S1E4|
+The One Left Behind|tv|399 AG|Seven Havens S1E5|
+Night of the Afflicted|tv|399 AG|Seven Havens S1E6|
+What Lies Beneath|tv|399 AG|Seven Havens S1E7|
+The Envoys: Part One|tv|399 AG|Seven Havens S1E8|
+The Envoys: Part Two|tv|399 AG|Seven Havens S1E9|
+Ghosts and Spirits|tv|399 AG|Seven Havens S1E10|
+Battle of the Ruins|tv|399 AG|Seven Havens S1E11|
+The Dome|tv|399 AG|Seven Havens S1E12|
+The Root Chakra|tv|399 AG|Seven Havens S1E13|`
+};
+
+const DATA=[];
+ERAS.forEach(e=>(RAW[e.id]||"").split("\n").forEach(l=>{
+  if(!l.trim())return;
+  const [t,type,y,src]=l.split("|");
+  DATA.push({t,type,y,src:src||"",era:e.id,k:e.id+"|"+t});
+}));
+
+/* owned state (saved in this browser) */
+let owned={};try{owned=JSON.parse(localStorage.getItem("avatarOwned")||"{}")}catch(e){}
+const save=()=>{try{localStorage.setItem("avatarOwned",JSON.stringify(owned))}catch(e){}};
+
+const $=s=>document.querySelector(s),out=$("#out"),stat=$("#stat");
+const esc=s=>String(s).replace(/[&<>"]/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"}[c]));
+const slug=s=>s.toLowerCase().replace(/&/g,"and").replace(/[^a-z0-9]+/g,"-").replace(/^-|-$/g,"");
+/* covers: episodes use covers/<show>-s<N>.jpg (atla-s1, korra-s2, seven-havens-s1); anthology comics use covers/<anthology-slug>.jpg; otherwise covers/<title-slug>.jpg */
+function covers(d){
+  const a=[];
+  const m=/^(ATLA|Korra|Seven Havens|Legend of Korra) S(\d+)E/.exec(d.src);
+  if(m)a.push("covers/"+slug(m[1].replace("Legend of ",""))+"-s"+m[2]+".jpg");
+  else if(d.type==="cs"&&d.src)a.push("covers/"+slug(d.src)+".jpg");
+  a.push("covers/"+slug(d.t)+".jpg");
+  return a;
+}
+const types=new Set(),cnt={};DATA.forEach(d=>cnt[d.type]=(cnt[d.type]||0)+1);
+const chips=$("#chips");
+chips.innerHTML=Object.keys(TYPES).filter(k=>cnt[k]).map(k=>`<button class="chip" data-k="${k}" style="--c:${TYPES[k][1]}" aria-pressed="false">${TYPES[k][0]}<small>${cnt[k]}</small></button>`).join("")+'<button class="chip clr" id="clr" hidden>Clear</button>';
+chips.onclick=e=>{
+  const b=e.target.closest(".chip");if(!b)return;
+  if(b.id==="clr")types.clear();else{const k=b.dataset.k;types.has(k)?types.delete(k):types.add(k)}
+  chips.querySelectorAll("[data-k]").forEach(c=>c.setAttribute("aria-pressed",types.has(c.dataset.k)));
+  $("#clr").hidden=!types.size;apply();
+};
+
+out.innerHTML=DATA.map((d,i)=>
+  `<div class="r" data-i="${i}" style="--c:hsl(${TYPES[d.type][1]} 55% 38%)"><img class="cv" alt="" data-s="${covers(d).join(",")}"><div class="tx"><div class="t">${esc(d.t)}</div><div class="m">${TYPES[d.type][0]} · ${esc(d.y)}${d.src?" · "+esc(d.src):""}</div></div><div class="ck">✓</div></div>`).join("");
+
+/* lazy cover loading with fallback chain, then a letter placeholder */
+function loadCover(img){
+  const list=(img.dataset.s||"").split(",").filter(Boolean);
+  const next=()=>{
+    const s=list.shift();
+    if(!s){const d=DATA[img.closest(".r").dataset.i];img.replaceWith(Object.assign(document.createElement("div"),{className:"cv",textContent:d.t[0]}));return}
+    img.src=s;
+  };
+  img.onerror=next;next();
+}
+const io=new IntersectionObserver(es=>es.forEach(en=>{if(en.isIntersecting){io.unobserve(en.target);loadCover(en.target)}}),{rootMargin:"300px"});
+out.querySelectorAll("img.cv").forEach(i=>io.observe(i));
+
+const rowEls=[...out.querySelectorAll(".r")];
+rowEls.forEach(r=>{if(owned[DATA[r.dataset.i].k])r.classList.add("own")});
+out.onclick=e=>{
+  const r=e.target.closest(".r");if(!r)return;
+  const k=DATA[r.dataset.i].k;
+  if(owned[k]){delete owned[k]}else owned[k]=1;
+  r.classList.toggle("own",!!owned[k]);save();apply();
+};
+
+let mode="all";
+$("#ow").onclick=e=>{const b=e.target.closest("button");if(!b)return;mode=b.dataset.v;$("#ow").querySelectorAll("button").forEach(x=>x.classList.toggle("on",x===b));apply()};
+$("#q").oninput=apply;
+
+function apply(){
+  const q=$("#q").value.trim().toLowerCase();
+  let vis=0,own=0;
+  rowEls.forEach(r=>{
+    const d=DATA[r.dataset.i],o=!!owned[d.k];
+    if(o)own++;
+    const ok=(!types.size||types.has(d.type))&&(mode==="all"||(mode==="own")===o)&&(!q||(d.t+" "+d.src+" "+d.y).toLowerCase().includes(q));
+    r.hidden=!ok;if(ok)vis++;
+  });
+  $("#none").hidden=vis>0;
+  stat.textContent=own+" / "+DATA.length+" owned";
+}
+apply();
+</script>
+</body>
+</html>
