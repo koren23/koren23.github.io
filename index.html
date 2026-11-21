@@ -5,71 +5,133 @@
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <title>Koren23</title>
 <style>
-:root{color-scheme:dark}
-html,body{height:100%;margin:0;background:#000;color:#e8e8e8;font-family:Georgia,serif;overflow:hidden}
-body{display:flex;flex-direction:column;align-items:center;justify-content:center;gap:18px;touch-action:pan-y;user-select:none;-webkit-user-select:none;padding:env(safe-area-inset-top,0px) 0 env(safe-area-inset-bottom,0px)}
-#ring{position:relative;width:100%;height:300px}
-.card{position:absolute;left:50%;top:50%;width:170px;height:240px;border-radius:16px;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:14px;text-align:center;padding:14px;box-sizing:border-box;cursor:pointer;background:linear-gradient(160deg,hsl(var(--h) 70% 30%),hsl(var(--h) 60% 8%));border:1px solid rgba(255,255,255,.12);will-change:transform}
-.card.front{box-shadow:0 0 44px hsl(var(--h) 80% 40% / .55)}
-.ic{font-size:52px}
-.tt{font-size:17px;line-height:1.25;font-weight:bold}
-#name{margin:0;font-size:clamp(20px,5vw,30px);letter-spacing:.1em;text-transform:uppercase;color:#c8102e;text-align:center;padding:0 16px}
-#hint{margin:0;color:#777;font-size:13px}
-.nav{display:flex;gap:16px}
-.nav button{background:#111;color:#ddd;border:1px solid #333;border-radius:50%;width:46px;height:46px;font-size:24px;cursor:pointer}
+:root{color-scheme:dark;--h:350}
+*{box-sizing:border-box}
+html,body{height:100%;margin:0}
+body{
+  background:#07070a;color:#f3f1ee;overflow:hidden;
+  font-family:"Inter",system-ui,-apple-system,"Segoe UI",sans-serif;
+  touch-action:pan-y;user-select:none;-webkit-user-select:none;
+  display:flex;align-items:center;justify-content:center;
+  padding:env(safe-area-inset-top,0) 0 env(safe-area-inset-bottom,0);
+}
+/* background: hue-tinted glows + grain + vignette */
+.bg{position:fixed;inset:0;z-index:0;pointer-events:none;overflow:hidden}
+.glow{position:absolute;border-radius:50%;filter:blur(110px);opacity:.5;transition:background 1s ease}
+.g1{width:60vmax;height:60vmax;left:-15vmax;top:-20vmax;background:hsl(var(--h) 80% 38%)}
+.g2{width:55vmax;height:55vmax;right:-18vmax;bottom:-22vmax;background:hsl(calc(var(--h) + 50) 70% 30%)}
+.grain{position:absolute;inset:0;opacity:.07;mix-blend-mode:overlay;
+  background-image:url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='160' height='160'><filter id='n'><feTurbulence type='fractalNoise' baseFrequency='.9' numOctaves='2' stitchTiles='stitch'/></filter><rect width='100%' height='100%' filter='url(%23n)'/></svg>")}
+.vig{position:absolute;inset:0;background:radial-gradient(ellipse at center,transparent 40%,rgba(0,0,0,.75) 100%)}
+
+#ring{position:relative;z-index:1;width:100%;height:min(86vh,640px)}
+.card{
+  position:absolute;left:50%;top:50%;
+  width:min(84vw,400px);height:min(86vh,620px);
+  border-radius:26px;overflow:hidden;cursor:pointer;will-change:transform,opacity;
+  background:hsl(var(--c) 40% 12%);
+  border:1px solid rgba(255,255,255,.12);
+  box-shadow:0 30px 60px -20px rgba(0,0,0,.7);
+  transition:box-shadow .4s,filter .4s;
+}
+.card.front{box-shadow:0 30px 80px -20px hsl(var(--c) 90% 45% / .55),0 0 0 1px rgba(255,255,255,.18)}
+.card:not(.front){filter:blur(1.5px) brightness(.7)}
+.art{position:absolute;inset:0;background:
+  radial-gradient(circle at 30% 20%,hsl(var(--c) 80% 45%),transparent 60%),
+  linear-gradient(160deg,hsl(var(--c) 60% 24%),hsl(var(--c) 50% 6%))}
+.art span{position:absolute;right:-.08em;top:-.12em;font:700 22rem/1 Georgia,serif;color:rgba(255,255,255,.08)}
+.art img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;display:block;pointer-events:none}
+.shade{position:absolute;inset:0;background:linear-gradient(to top,rgba(0,0,0,.92) 0%,rgba(0,0,0,.55) 38%,transparent 68%)}
+.info{position:absolute;left:0;right:0;bottom:0;padding:26px 26px 28px;display:flex;flex-direction:column;gap:10px}
+.eyebrow{font-size:11px;letter-spacing:.22em;text-transform:uppercase;color:hsl(var(--c) 90% 72%);font-weight:600}
+.tt{font:700 clamp(26px,7vw,34px)/1.1 Georgia,"Times New Roman",serif;margin:0}
+.ds{margin:0;font-size:14.5px;line-height:1.5;color:rgba(255,255,255,.72)}
+.open{align-self:flex-start;margin-top:6px;padding:9px 18px;border-radius:99px;font-size:13px;font-weight:600;
+  background:rgba(255,255,255,.14);backdrop-filter:blur(10px);-webkit-backdrop-filter:blur(10px);
+  border:1px solid rgba(255,255,255,.22)}
+.dots{position:absolute;top:16px;left:0;right:0;display:flex;justify-content:center;gap:6px}
+.dots i{width:18px;height:3px;border-radius:3px;background:rgba(255,255,255,.3);transition:.3s}
+.dots i.on{background:#fff;width:30px}
+.arrow{
+  position:absolute;top:50%;transform:translateY(-50%);width:44px;height:44px;border-radius:50%;
+  display:grid;place-items:center;cursor:pointer;color:#fff;padding:0;z-index:2;
+  background:rgba(10,10,14,.45);border:1px solid rgba(255,255,255,.25);
+  backdrop-filter:blur(12px);-webkit-backdrop-filter:blur(12px);transition:background .2s,transform .2s;
+}
+.arrow:hover{background:rgba(255,255,255,.22)}
+.arrow:active{transform:translateY(-50%) scale(.92)}
+.arrow svg{width:20px;height:20px;fill:none;stroke:currentColor;stroke-width:2.4;stroke-linecap:round;stroke-linejoin:round}
+.arrow.l{left:14px}.arrow.r{right:14px}
+.card:not(.front) .arrow,.card:not(.front) .dots{display:none}
+.single .arrow{display:none}
+:focus-visible{outline:2px solid #fff;outline-offset:3px}
+@media (prefers-reduced-motion:reduce){.glow{transition:none}}
 </style>
 </head>
 <body>
+<div class="bg"><div class="glow g1"></div><div class="glow g2"></div><div class="grain"></div><div class="vig"></div></div>
 <div id="ring"></div>
-<h1 id="name"></h1>
-<p id="hint"></p>
-<div class="nav"><button id="prev" aria-label="Previous">‹</button><button id="next" aria-label="Next">›</button></div>
 <script>
-/* ADD YOUR SITES HERE. One line per site.
-   path = folder (e.g. "my-site/") or file (e.g. "game.html") inside this repo. */
+/* ADD YOUR SITES HERE. One object per site.
+   path = folder/file in this repo or a full URL.
+   img  = image file in the repo (e.g. "img/stephen-king.jpg"); optional, falls back to a gradient. */
 const SITES=[
-  {title:"Stephen King Catalogue",path:"stephen-king/index.html",icon:"📖",hue:350},
-  {title:"Home Page",path:"https://koren23.github.io",icon:"🏠",hue:210},
-  {title:"Wishlist",path:"https://wshl.st/koren",icon:"🎁",hue:130},
-   
-  // {title:"My Next Site",path:"my-next-site/",icon:"🎬",hue:210},
-  // {title:"Another Page",path:"another.html",icon:"🎮",hue:130},
+  {title:"Stephen King Catalogue",desc:"Browse and track every novel, story and collection from the Master of Horror.",path:"stephen-king/index.html",img:"img/stephen-king.jpg",hue:350,tag:"Library"},
+  {title:"Home Page",desc:"The main hub — projects, links and everything about me in one place.",path:"https://koren23.github.io",img:"img/home.jpg",hue:210,tag:"Hub"},
+  {title:"Wishlist",desc:"Things I'm hoping to get — gift ideas, always up to date.",path:"https://wshl.st/koren",img:"img/wishlist.jpg",hue:140,tag:"Gifts"},
+  // {title:"My Next Site",desc:"Short description.",path:"my-next-site/",img:"img/next.jpg",hue:30,tag:"Project"},
 ];
 
-const N=SITES.length,step=360/N,ring=document.getElementById("ring"),name=document.getElementById("name");
-document.getElementById("hint").textContent=N>1?"Swipe to spin · tap the front card to open":"Tap the card to open";
-let rot=0,target=0,front=0,drag=null,justDragged=false;
+const N=SITES.length,step=360/N,ring=document.getElementById("ring");
+if(N===1)document.body.classList.add("single");
+let rot=0,target=0,front=0,drag=null,justDragged=false,lastHue=null;
+const chev=d=>`<svg viewBox="0 0 24 24"><path d="${d}"/></svg>`;
+const esc=s=>String(s).replace(/[&<>"]/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"}[c]));
+
 const cards=SITES.map((s,i)=>{
-  const d=document.createElement("div");d.className="card";
-  d.style.setProperty("--h",s.hue!==undefined?s.hue:(i*67)%360);
-  d.innerHTML='<div class="ic"></div><div class="tt"></div>';
-  d.firstChild.textContent=s.icon||"🌐";d.lastChild.textContent=s.title;
+  const d=document.createElement("div");
+  d.className="card";d.setAttribute("role","link");d.tabIndex=0;d.setAttribute("aria-label",s.title);
+  d.style.setProperty("--c",s.hue!==undefined?s.hue:(i*67)%360);
+  d.innerHTML=
+    `<div class="art"><span>${esc(s.title[0])}</span>${s.img?`<img src="${esc(s.img)}" alt="" draggable="false">`:""}</div>`+
+    `<div class="shade"></div>`+
+    `<div class="dots">${SITES.map((_,j)=>`<i class="${j===i?"on":""}"></i>`).join("")}</div>`+
+    `<button class="arrow l" aria-label="Previous">${chev("M15 5l-7 7 7 7")}</button>`+
+    `<button class="arrow r" aria-label="Next">${chev("M9 5l7 7-7 7")}</button>`+
+    `<div class="info"><div class="eyebrow">${esc(s.tag||"Website")}</div><h2 class="tt">${esc(s.title)}</h2>`+
+    `<p class="ds">${esc(s.desc||"")}</p><span class="open">Open site ↗</span></div>`;
+  const img=d.querySelector("img");if(img)img.onerror=()=>img.remove();
+  d.querySelector(".l").onclick=e=>{e.stopPropagation();if(!justDragged)shift(-1)};
+  d.querySelector(".r").onclick=e=>{e.stopPropagation();if(!justDragged)shift(1)};
+  d.querySelectorAll(".arrow").forEach(b=>b.addEventListener("pointerdown",e=>e.stopPropagation()));
   d.onclick=()=>{if(justDragged)return;if(i===front)location.href=s.path;else goTo(i)};
+  d.onkeydown=e=>{if(e.key==="Enter"&&i===front)location.href=s.path};
   ring.appendChild(d);return d;
 });
+
 function draw(){
-  const r=Math.min(innerWidth*0.38,200);
+  const w=Math.min(innerWidth*.84,400),r=Math.min(innerWidth*.5,w*1.05);
   cards.forEach((c,i)=>{
     const th=(i*step+rot)*Math.PI/180,x=Math.sin(th)*r,z=Math.cos(th),k=(z+1)/2;
-    c.style.transform=`translate(-50%,-50%) translate(${x}px,${(1-z)*-18}px) scale(${.6+.4*k})`;
-    c.style.opacity=N===1?1:.25+.75*k;
+    c.style.transform=`translate(-50%,-50%) translateX(${x}px) scale(${.62+.38*k})`;
+    c.style.opacity=N===1?1:Math.max(0,.15+.85*k);
     c.style.zIndex=Math.round(k*100);
-    c.classList.toggle("front",k>.98);
+    c.classList.toggle("front",k>.97);
+    c.style.pointerEvents=k>.3?"auto":"none";
   });
   front=((Math.round(-rot/step)%N)+N)%N;
-  name.textContent=SITES[front].title;
+  if(lastHue!==front){lastHue=front;const h=SITES[front].hue;document.documentElement.style.setProperty("--h",h!==undefined?h:(front*67)%360)}
 }
 function shift(dir){target=-(Math.round(-target/step)+dir)*step}
 function goTo(i){let d=i-front;if(d>N/2)d-=N;if(d<-N/2)d+=N;shift(d)}
 function loop(){const d=target-rot;if(Math.abs(d)>.01){rot+=d*.14;draw()}requestAnimationFrame(loop)}
+
 addEventListener("pointerdown",e=>{drag={x:e.clientX,r:rot,m:0}});
 addEventListener("pointermove",e=>{if(!drag)return;const dx=e.clientX-drag.x;drag.m=Math.max(drag.m,Math.abs(dx));if(drag.m>6){rot=target=drag.r+dx*.35;draw()}});
 addEventListener("pointerup",()=>{if(!drag)return;if(drag.m>6){justDragged=true;setTimeout(()=>justDragged=false,60);target=Math.round(rot/step)*step}drag=null});
 let lastWheel=0;
 addEventListener("wheel",e=>{const t=Date.now();if(t-lastWheel<250)return;lastWheel=t;shift((e.deltaY>0||e.deltaX>0)?1:-1)});
-addEventListener("keydown",e=>{if(e.key==="ArrowRight")shift(1);else if(e.key==="ArrowLeft")shift(-1);else if(e.key==="Enter")location.href=SITES[front].path});
-document.getElementById("next").onclick=()=>shift(1);
-document.getElementById("prev").onclick=()=>shift(-1);
+addEventListener("keydown",e=>{if(e.key==="ArrowRight")shift(1);else if(e.key==="ArrowLeft")shift(-1)});
 addEventListener("resize",draw);
 draw();loop();
 </script>
