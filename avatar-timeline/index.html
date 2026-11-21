@@ -312,6 +312,7 @@ function covers(d){
   const m=/^(ATLA|Korra|Seven Havens|Legend of Korra) S(\d+)E/.exec(d.src);
   if(m)a.push("covers/"+slug(m[1].replace("Legend of ",""))+"-s"+m[2]+".jpg");
   else if(d.type==="cs"&&d.src)a.push("covers/"+slug(d.src)+".jpg");
+  if(d.type==="gn")a.push("covers/"+slug(d.t.replace(/,? Part (One|Two|Three)$/,""))+".jpg");   /* graphic-novel parts share one cover */
   a.push("covers/"+slug(d.t)+".jpg");
   return a;
 }
