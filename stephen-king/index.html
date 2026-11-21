@@ -8,55 +8,89 @@
 :root{color-scheme:dark;box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}
 *{box-sizing:border-box}
 html,body{margin:0;background:#000;color:#e8e8e8;font-family:Georgia,"Times New Roman",serif}
-header{text-align:center;padding:28px 16px 12px}
+header{text-align:center;padding:28px 16px 12px;position:relative}
+.back{position:absolute;top:12px;left:12px;background:#111;color:#ccc;border:1px solid #333;border-radius:20px;padding:8px 14px;font-size:13px;text-decoration:none}
+#q{width:100%;max-width:420px;background:#111;color:#e8e8e8;border:1px solid #333;border-radius:20px;padding:10px 16px;font:inherit;font-size:14px;outline:none}
+#q:focus{border-color:#c8102e}
+.back:hover{background:#c8102e;border-color:#c8102e;color:#fff}
 h1{margin:0;font-size:clamp(26px,6vw,44px);letter-spacing:.12em;color:#c8102e;text-transform:uppercase}
 .sub{color:#888;font-size:14px;margin-top:6px}
-.bar{display:flex;flex-wrap:wrap;gap:8px;justify-content:center;padding:10px 12px 18px}
+.bar{display:flex;flex-wrap:wrap;gap:8px;justify-content:center;padding:10px 12px 10px}
 button.f{background:#111;color:#ccc;border:1px solid #333;border-radius:20px;padding:8px 14px;font:inherit;font-size:13px;cursor:pointer}
 button.f.on{background:#c8102e;border-color:#c8102e;color:#fff}
+button.f.o.on{background:#d4a017;border-color:#d4a017;color:#000}
 .prog{max-width:420px;margin:0 auto 6px;height:6px;background:#1a1a1a;border-radius:3px;overflow:hidden}
 .prog i{display:block;height:100%;background:#c8102e;width:0;transition:width .3s}
 main{max-width:1100px;margin:0 auto;padding:0 12px 40px}
 h2{font-size:15px;color:#c8102e;border-bottom:1px solid #222;padding-bottom:4px;margin:26px 0 12px;letter-spacing:.2em}
 .grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(104px,1fr));gap:12px}
-.book{aspect-ratio:2/3;border-radius:4px;cursor:pointer;position:relative;overflow:hidden;padding:8px;display:flex;flex-direction:column;justify-content:space-between;text-align:center;border:1px solid #222;background:#0b0b0b;color:#555;transition:transform .15s}
+.book{aspect-ratio:2/3;border-radius:4px;cursor:pointer;position:relative;overflow:hidden;padding:8px;display:flex;flex-direction:column;justify-content:space-between;text-align:center;border:1px dashed #3a3a3a;background:#0b0b0b;color:#555;transition:transform .15s}
 .book:active{transform:scale(.96)}
+.cell{min-width:0}
+.cap{margin-top:6px;font-size:12px;line-height:1.25;text-align:center;color:#777;overflow-wrap:anywhere}
+.cap.r{color:#e8e8e8}
 .book .a{font-size:8px;letter-spacing:.2em;text-transform:uppercase}
 .book .t{font-size:13px;line-height:1.2;font-weight:bold}
 .book .y{font-size:11px}
-.book.read{border-color:transparent;color:#fff;box-shadow:0 4px 14px rgba(0,0,0,.8);background:linear-gradient(160deg,hsl(var(--h) 70% 28%),hsl(var(--h) 60% 8%))}
+.book.read{color:#fff;box-shadow:0 4px 14px rgba(0,0,0,.8);background:linear-gradient(160deg,hsl(var(--h) 70% 28%),hsl(var(--h) 60% 8%))}
 .book.read .t{font-size:15px;text-shadow:0 2px 6px #000}
 .book.read::after{content:"";position:absolute;inset:5px;border:1px solid rgba(255,255,255,.25);pointer-events:none}
+.book.owned{border:2px solid #d4a017}
+.book.owned.read{border-color:#d4a017}
 .book.b .a::after{content:" · Bachman"}
 .empty{color:#666;text-align:center;padding:40px}
 .book.has{padding:0}
 .cv{position:absolute;inset:0;width:100%;height:100%;object-fit:cover}
-.book.has .dots{z-index:2}
+.book:not(.read) .cv{opacity:.35;filter:grayscale(.7)}
 .book.has::after{display:none}
 .book.has>.a,.book.has>.t,.book.has>.y{visibility:hidden}
-.dots{position:absolute;top:5px;right:5px;display:flex;flex-direction:column;gap:3px}
+.dots{position:absolute;top:5px;right:5px;display:flex;flex-direction:column;gap:3px;z-index:2}
 .dots i{width:7px;height:7px;border-radius:50%;display:block;box-shadow:0 0 0 1px rgba(0,0,0,.6)}
-.cam{position:absolute;bottom:5px;right:5px;z-index:2;background:rgba(0,0,0,.65);border:1px solid #555;color:#fff;border-radius:50%;width:28px;height:28px;font-size:13px;padding:0;cursor:pointer}
+.chk{position:absolute;top:5px;left:5px;z-index:2;width:20px;height:20px;border-radius:50%;background:#2ecc71;color:#000;font:bold 13px/20px sans-serif;text-align:center;box-shadow:0 0 0 1px rgba(0,0,0,.6)}
+.own{position:absolute;bottom:5px;left:5px;z-index:3;width:28px;height:28px;border-radius:50%;padding:0;cursor:pointer;font-size:14px;line-height:1;background:rgba(0,0,0,.7);border:1px dashed #777;color:#777}
+.own.on{background:#d4a017;border:1px solid #fff;color:#000}
 button.u{background:#111;color:#ccc;border:1px solid var(--c,#333);border-radius:20px;padding:7px 12px;font:inherit;font-size:12px;cursor:pointer}
 button.u.on{background:var(--c,#c8102e);color:#000;font-weight:bold}
 #udesc{color:#999;font-size:13px;min-height:18px;margin-bottom:6px}
+.legend{display:flex;flex-wrap:wrap;gap:6px 16px;justify-content:center;color:#999;font-size:12px;padding:4px 16px 8px}
+.legend span{display:inline-flex;align-items:center;gap:6px}
+.legend .chk,.legend .own{position:static;width:18px;height:18px;font-size:11px;line-height:18px;cursor:default;display:inline-block;text-align:center}
+.legend .dim{width:14px;height:20px;border-radius:2px;background:#888;opacity:.35}
+.legend .full{width:14px;height:20px;border-radius:2px;background:#c8102e}
 </style>
 </head>
 <body>
 <header>
+<a class="back" href="../index.html">Homepage</a>
 <h1>Stephen King</h1>
 <div class="sub" id="count"></div>
-<div class="sub">Tap a book to mark it read and its cover appears</div>
+<div class="sub">Tap a book to mark it read · tap the 📖 button to mark it owned</div>
 </header>
 <div class="prog"><i id="bar"></i></div>
+<div class="legend">
+<span><i class="full"></i>Read (full colour) <b class="chk">✓</b></span>
+<span><i class="dim"></i>Unread (faded)</span>
+<span><b class="own on">📖</b>Owned (gold border)</span>
+<span><b class="own">📖</b>Not owned (dashed)</span>
+</div>
+<div class="bar">
+<input type="search" id="q" placeholder="Search for a book…" autocomplete="off" aria-label="Search for a book">
+</div>
 <div class="bar">
 <button class="f on" data-f="all">All</button>
 <button class="f" data-f="read">Read</button>
 <button class="f" data-f="unread">Unread</button>
+</div>
+<div class="bar" style="padding-top:0">
+<button class="f o on" data-o="all">Any ownership</button>
+<button class="f o" data-o="owned">Owned</button>
+<button class="f o" data-o="unowned">Not owned</button>
+</div>
+<div class="bar" style="padding-top:0">
 <button class="f" id="sort">Oldest first</button>
 <button class="f" id="dl">Download all covers</button>
 <button class="f" id="sv">Save offline copy</button>
-<div class="sub" id="st" style="width:100%"></div>
+<div class="sub" id="st" style="width:100%;text-align:center"></div>
 </div>
 <div class="bar" id="uni"></div>
 <div class="sub" id="udesc" style="text-align:center;padding:0 16px"></div>
@@ -142,13 +176,27 @@ const raw=`1974|Carrie
 2022|Fairy Tale
 2023|Holly
 2024|You Like It Darker
-2025|Never Flinch`;
-const books=raw.split("\n").map((l,i)=>{const[p,t]=l.split("|");const b=t.endsWith("*");return{id:i,y:+p,t:b?t.slice(0,-1):t,b,h:(i*47+10)%360}});
-let read=new Set(),filter="all",desc=false,uni="all",covers={},auto={},bad=new Set(),pending=null;
+2025|Never Flinch
+2004|Faithful
+2009|Stephen King Goes to the Movies
+2016|Charlie the Choo-Choo
+2017|Gwendy’s Button Box
+2019|Gwendy’s Magic Feather
+2022|Gwendy’s Final Task
+2025|Hansel and Gretel
+2026|Other Worlds Than These
+2012|Road Rage
+2013|The Dark Man`;
+// NOTE: the lines after "Never Flinch" were added later. Ids are positional, so they are appended
+// at the end to keep saved read/owned/cover state valid. render() sorts by year at display time.
+// Out-of-print titles are hidden. Ids stay positional so saved state remains valid.
+const OOP=new Set(["Rage","Charlie the Choo-Choo","The Dark Man","Blockade Billy","Road Rage","Stephen King Goes to the Movies","Cycle of the Werewolf"]);
+const books=raw.split("\n").map((l,i)=>{const[p,t]=l.split("|");const b=t.endsWith("*");return{id:i,y:+p,t:b?t.slice(0,-1):t,b,h:(i*47+10)%360}}).filter(b=>!OOP.has(b.t));
+let read=new Set(),owned=new Set(),filter="all",ownFilter="all",desc=false,uni="all",covers={},auto={},bad=new Set(),pending=null;
 const U=[
-["cr","Castle Rock","#e8892b","The fictional Maine town where so much of King’s horror lands.",["The Dead Zone","Cujo","Different Seasons","The Dark Half","Needful Things","Four Past Midnight"]],
+["cr","Castle Rock","#e8892b","The fictional Maine town where so much of King’s horror lands.",["The Dead Zone","Cujo","Different Seasons","The Dark Half","Needful Things","Four Past Midnight","Gwendy’s Button Box","Gwendy’s Magic Feather","Gwendy’s Final Task"]],
 ["derry","Derry","#3b9ad9","The cursed Maine city of Pennywise and recurring cycles of evil.",["It","Insomnia","Bag of Bones","Dreamcatcher","11/22/63"]],
-["dt","Dark Tower","#a566e0","The core series, plus books tied in through Flagg, the Tower and other worlds.",["The Gunslinger","The Drawing of the Three","The Waste Lands","Wizard and Glass","Wolves of the Calla","Song of Susannah","The Dark Tower","The Wind Through the Keyhole","The Eyes of the Dragon","The Talisman","Black House","’Salem’s Lot","The Stand","Insomnia","Hearts in Atlantis","Rose Madder","Desperation","The Dark Half","Needful Things","It","Everything’s Eventual"]],
+["dt","Dark Tower","#a566e0","The core series, plus books tied in through Flagg, the Tower and other worlds.",["The Gunslinger","The Drawing of the Three","The Waste Lands","Wizard and Glass","Wolves of the Calla","Song of Susannah","The Dark Tower","The Wind Through the Keyhole","The Eyes of the Dragon","The Talisman","Other Worlds Than These","Black House","’Salem’s Lot","The Stand","Insomnia","Hearts in Atlantis","Rose Madder","Desperation","The Dark Half","Needful Things","It","Everything’s Eventual"]],
 ["hodges","Hodges & Holly","#2ecc71","Mr. Mercedes trilogy and the books that follow Holly Gibney.",["Mr. Mercedes","Finders Keepers","End of Watch","If It Bleeds","The Outsider","Holly"]],
 ["jl","Jerusalem’s Lot","#e0334f","The vampire-haunted Maine town.",["’Salem’s Lot","Night Shift"]],
 ["shine","The Shining","#e6d34a","Danny Torrance, the Overlook and what came after.",["The Shining","Doctor Sleep"]]
@@ -160,7 +208,7 @@ try{auto=JSON.parse(localStorage.getItem("sk-auto")||"{}")}catch(e){}
 const tried=new Set();
 async function ensureCover(id){
 if(covers[id]||auto[id]||tried.has(id))return;tried.add(id);
-const b=books[id],q=b.t.replace(/’/g,"'");let u=null;
+const b=books.find(x=>x.id===id);if(!b)return;const q=b.t.replace(/’/g,"'");let u=null;
 try{const r=await fetch("https://openlibrary.org/search.json?title="+encodeURIComponent(q)+"&author=stephen+king&limit=10&fields=cover_i");const d=await r.json();const h=(d.docs||[]).find(x=>x.cover_i);if(h)u="https://covers.openlibrary.org/b/id/"+h.cover_i+"-M.jpg"}catch(e){}
 if(!u){try{const r=await fetch("https://www.googleapis.com/books/v1/volumes?q="+encodeURIComponent('intitle:"'+q+'" inauthor:"stephen king"')+"&maxResults=10");const d=await r.json();const h=(d.items||[]).find(x=>x.volumeInfo&&x.volumeInfo.imageLinks);if(h)u=(h.volumeInfo.imageLinks.thumbnail||h.volumeInfo.imageLinks.smallThumbnail).replace("http://","https://")}catch(e){}}
 if(u){auto[id]=u;try{localStorage.setItem("sk-auto",JSON.stringify(auto))}catch(e){}render()}else tried.delete(id);
@@ -169,32 +217,44 @@ document.addEventListener("error",e=>{const t=e.target;if(t&&t.classList&&t.clas
 function saveCovers(){try{localStorage.setItem("sk-covers",JSON.stringify(covers))}catch(e){alert("Storage is full, so that cover could not be saved.")}}
 const ut={};books.forEach(b=>ut[b.t]=[]);U.forEach(u=>u[4].forEach(t=>{if(ut[t])ut[t].push(u)}));
 try{read=new Set(JSON.parse(localStorage.getItem("sk-read")||"[]"))}catch(e){}
+try{owned=new Set(JSON.parse(localStorage.getItem("sk-owned")||"[]"))}catch(e){}
 function save(){try{localStorage.setItem("sk-read",JSON.stringify([...read]))}catch(e){}}
+function saveOwned(){try{localStorage.setItem("sk-owned",JSON.stringify([...owned]))}catch(e){}}
+let query="";
+function norm(s){return s.toLowerCase().replace(/[’‘]/g,"'").trim()}
+document.getElementById("q").addEventListener("input",e=>{query=e.target.value;render()});
 function esc(s){return s.replace(/&/g,"&amp;").replace(/</g,"&lt;")}
 function render(){
 const main=document.getElementById("main");
-let list=books.filter(b=>(filter==="all"||(filter==="read")===read.has(b.id))&&(uni==="all"||ut[b.t].some(u=>u[0]===uni)));
-if(desc)list=list.slice().reverse();
+const nq=norm(query);
+let list=books.filter(b=>(!nq||norm(b.t).includes(nq)||String(b.y).includes(nq))&&(filter==="all"||(filter==="read")===read.has(b.id))&&(ownFilter==="all"||(ownFilter==="owned")===owned.has(b.id))&&(uni==="all"||ut[b.t].some(u=>u[0]===uni)));
+list.sort((a,b)=>a.y-b.y||a.id-b.id);
+if(desc)list.reverse();
 let html="",cur=null;
 for(const b of list){
 if(b.y!==cur){if(cur!==null)html+="</div>";cur=b.y;html+=`<h2>${b.y}</h2><div class="grid">`}
-const r=read.has(b.id);
-const c=r&&!bad.has(b.id)&&(covers[b.id]||auto[b.id]);
+const r=read.has(b.id),o=owned.has(b.id);
+const c=!bad.has(b.id)&&(covers[b.id]||auto[b.id]);
 const dots=ut[b.t].map(u=>`<i style="background:${u[2]}"></i>`).join("");
-html+=`<div class="book${r?" read":""}${b.b?" b":""}${c?" has":""}" style="--h:${b.h}" data-id="${b.id}">${c?`<img class="cv" src="${c}" alt="">`:""}<div class="a">Stephen King</div><div class="t">${esc(b.t)}</div><div class="y">${b.y}</div><span class="dots">${dots}</span></div>`;
+html+=`<div class="cell"><div class="book${r?" read":""}${o?" owned":""}${b.b?" b":""}${c?" has":""}" style="--h:${b.h}" data-id="${b.id}" title="${esc(b.t).replace(/"/g,"&quot;")} (${b.y})">${c?`<img class="cv" src="${c}" alt="">`:""}${r?'<span class="chk" title="Read">✓</span>':""}<div class="a">Stephen King</div><div class="t">${esc(b.t)}</div><div class="y">${b.y}</div><span class="dots">${dots}</span><button class="own${o?" on":""}" title="${o?"Owned (tap to unmark)":"Not owned (tap to mark owned)"}" aria-label="Toggle owned">📖</button></div>${c?`<div class="cap${r?" r":""}">${esc(b.t)}</div>`:""}</div>`;
 }
 if(cur!==null)html+="</div>";
+const nRead=books.filter(b=>read.has(b.id)).length,nOwned=books.filter(b=>owned.has(b.id)).length;
 main.innerHTML=html||'<div class="empty">Nothing here yet.</div>';
-document.getElementById("count").textContent=`${read.size} of ${books.length} books read`;
-document.getElementById("bar").style.width=(read.size/books.length*100)+"%";
+document.getElementById("count").textContent=`${nRead} of ${books.length} read · ${nOwned} owned`;
+document.getElementById("bar").style.width=(nRead/books.length*100)+"%";
 }
 document.getElementById("main").addEventListener("click",e=>{
 const el=e.target.closest(".book");if(!el)return;
 const id=+el.dataset.id;
-read.has(id)?read.delete(id):read.add(id);save();render();if(read.has(id))ensureCover(id);
+if(e.target.closest("button.own")){owned.has(id)?owned.delete(id):owned.add(id);saveOwned();render();return}
+read.has(id)?read.delete(id):read.add(id);save();render();
 });
 document.querySelectorAll("button.f[data-f]").forEach(b=>b.onclick=()=>{
 filter=b.dataset.f;document.querySelectorAll("button.f[data-f]").forEach(x=>x.classList.toggle("on",x===b));render();
+});
+document.querySelectorAll("button.f[data-o]").forEach(b=>b.onclick=()=>{
+ownFilter=b.dataset.o;document.querySelectorAll("button.f[data-o]").forEach(x=>x.classList.toggle("on",x===b));render();
 });
 document.getElementById("sort").onclick=e=>{desc=!desc;e.target.textContent=desc?"Newest first":"Oldest first";render()};
 function chips(){
@@ -230,7 +290,8 @@ render();
 const a=document.createElement("a");a.href=URL.createObjectURL(new Blob([html],{type:"text/html"}));a.download="stephen-king-catalogue-offline.html";document.body.appendChild(a);a.click();a.remove();
 };
 chips();render();
-(async()=>{for(const id of read){await ensureCover(id)}})();
+// Load covers for every book (read or not), throttled so the APIs aren't hammered
+(async()=>{for(const b of books){await ensureCover(b.id);await new Promise(r=>setTimeout(r,200))}})();
 </script>
 </body>
 </html>
